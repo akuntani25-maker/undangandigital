@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nayla's Sweet Seventeen</title>
+<meta name="description" content="Undangan sweet seventeen Nayla — template Sweet Seventeen">
+<meta name="theme-color" content="#140C14">
+<meta property="og:title" content="Nayla's Sweet Seventeen">
+<meta property="og:description" content="Sabtu, 13 Maret 2027. You're invited!">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@0,600;0,800;1,600&family=Pacifico&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="/assets/css/invitation.css">
+<style>
+  :root {
+    --bg: #140C14; --bg-2: #2E1430; --surface: #1F121F; --ink: #FBEFF6; --muted: #D2B9C8;
+    --accent: #FF5FA2; --accent-ink: #1A0B16; --accent-2: #C9C3D6; --line: #3A2238; --particle: #FFC2DD;
+    --font-display: 'Bodoni Moda', Georgia, serif;
+    --font-script: 'Pacifico', cursive;
+    --font-body: 'Plus Jakarta Sans', system-ui, sans-serif;
+    --script-size: .72;
+    --radius: 18px;
+  }
+  .block h2 { font-style: italic; }
+  .title-script { text-shadow: 0 0 24px color-mix(in srgb, var(--accent) 55%, transparent); }
+</style>
+</head>
+<body>
+<noscript><p style="padding:24px;text-align:center">Aktifkan JavaScript untuk membuka undangan ini.</p></noscript>
+<script src="/site.config.js"></script>
+<script>
+window.INVITATION = {
+  slug: 'sweet-seventeen',
+  timeZone: 'Asia/Jakarta',
+  theme: { opening: 'zoom', particles: 'sparkle', ornament: 'sparkle', frame: 'arch' },
+  monogram: '17',
+  music: '',
+  cover: { eyebrow: 'Sweet Seventeen', title: 'Nayla', toLabel: "You're invited,", note: 'Dresscode: pink & black', button: 'Open Invitation' },
+  hero: { eyebrow: "Nayla's", title: 'Sweet 17th', text: 'Tujuh belas tahun, satu malam yang tak terlupakan. Datang dan bersinar bersamaku!' },
+  hosts: {
+    eyebrow: 'Birthday Girl', heading: 'Nayla Anastasya',
+    people: [ { name: 'Nayla Anastasya', role: '17 tahun', parents: 'Putri dari Bapak Ferry & Ibu Diana', instagram: 'nayla.anstsy' } ]
+  },
+  events: [
+    { name: 'Sweet 17 Party', start: '2027-03-13T19:00:00+07:00', end: '2027-03-13T22:00:00+07:00', timeText: 'Pukul 19.00 – 22.00 WIB', venue: 'Rooftop Lounge', address: 'Jl. Contoh No. 71, Bandung', mapsUrl: 'https://maps.google.com/?q=Bandung', mapEmbed: true }
+  ],
+  eventsSection: { eyebrow: 'When & Where', heading: 'Party Info' },
+  dresscode: { text: 'Dresscode: pink & black glam', colors: ['#FF5FA2', '#140C14', '#C9C3D6'] },
+  rundown: {
+    eyebrow: 'Tonight', heading: 'Party Agenda',
+    items: [
+      { when: '19.00', title: 'Red Carpet & Photobooth' },
+      { when: '19.45', title: '17 Candles Ceremony' },
+      { when: '20.15', title: 'Dinner' },
+      { when: '21.00', title: 'Dance & Games' }
+    ]
+  },
+  gallery: { heading: 'Nayla', placeholders: 5 },
+  rsvp: { maxGuests: 2, options: ["I'll be there!", "Sorry, can't make it"], heading: 'Kamu datang?' },
+  wishes: { heading: 'Birthday Wishes', text: 'Tulis ucapan untuk Nayla.' },
+  endpoint: '',
+  closing: { text: 'Can’t wait to celebrate with you!', signatureLabel: 'xoxo', signature: 'Nayla' }
+};
+</script>
+<script src="/assets/js/invitation.js"></script>
+</body>
+</html>

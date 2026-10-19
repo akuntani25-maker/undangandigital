@@ -101,7 +101,7 @@ h2 { margin: 0; font-family: var(--display); font-size: clamp(2rem, 3.5vw, 2.8re
   background: var(--white); color: var(--plum); border: 1.5px solid #E2CFD6;
 }
 .filters button[aria-pressed="true"] { background: var(--plum); color: var(--white); border-color: var(--plum); }
-.tgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 24px; }
+.tgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(268px, 1fr)); gap: 24px; }
 .tcard { border: 1px solid var(--line); border-radius: 22px; overflow: hidden; display: flex; flex-direction: column; background: var(--white); }
 .tcard[hidden] { display: none; }
 .tprev {
@@ -117,7 +117,9 @@ h2 { margin: 0; font-family: var(--display); font-size: clamp(2rem, 3.5vw, 2.8re
 .tbody .top { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
 .tbody h3 { margin: 0; font-size: 17px; }
 .chip { font-size: 12px; font-weight: 600; color: var(--plum); background: var(--blush); padding: 5px 10px; border-radius: 999px; white-space: nowrap; }
-.tbody .row .btn { flex: 1; }
+.tbody .row { flex-wrap: nowrap; gap: 8px; }
+.tbody .row .btn { flex: 1; white-space: nowrap; padding-left: 12px; padding-right: 12px; }
+.tbody .top h3 { line-height: 1.25; }
 
 /* Fitur */
 .dark { background: var(--ink); color: var(--white); }
@@ -148,6 +150,49 @@ h2 { margin: 0; font-family: var(--display); font-size: clamp(2rem, 3.5vw, 2.8re
 .addons .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px 28px; font-size: 15px; }
 .addons .grid div { display: flex; justify-content: space-between; gap: 12px; border-bottom: 1px solid #E5D3D0; padding-bottom: 10px; }
 .addons b { white-space: nowrap; }
+
+/* Ekstra domain */
+.domain { margin-top: 24px; border: 1.5px solid var(--plum); border-radius: 26px; padding: clamp(24px, 4vw, 40px); display: flex; flex-wrap: wrap; gap: 28px 40px; align-items: center; }
+.domain-copy { flex: 999 1 380px; display: flex; flex-direction: column; gap: 12px; }
+.domain-copy h3 { margin: 0; font-family: var(--display); font-size: clamp(1.5rem, 2.6vw, 2rem); line-height: 1.2; }
+.domain-copy .url { color: var(--plum); font-family: var(--body); font-weight: 700; background: var(--blush); padding: 0 10px; border-radius: 8px; white-space: nowrap; }
+.domain-copy p { margin: 0; color: var(--muted); }
+.domain-copy ul { margin: 4px 0 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 8px; font-size: 15px; }
+.domain-copy li { display: flex; gap: 10px; }
+.domain-copy li svg { width: 18px; height: 18px; flex: none; margin-top: 3px; color: var(--plum); }
+.domain-prices { flex: 1 1 280px; display: flex; flex-direction: column; gap: 10px; }
+.dp { display: grid; grid-template-columns: 1fr auto; align-items: baseline; gap: 2px 12px; padding: 14px 18px; border-radius: 16px; background: var(--blush); }
+.dp .ext { font-weight: 700; font-size: 17px; }
+.dp .amt { font-family: var(--display); font-weight: 700; font-size: 22px; text-align: right; }
+.dp .per { grid-column: 2; font-size: 12px; color: var(--muted); text-align: right; }
+.dp.hot { background: var(--plum); color: var(--white); }
+.dp.hot .per { color: #EBDCE4; }
+
+/* Label efek di kartu template */
+.fx { display: flex; flex-wrap: wrap; gap: 6px; font-size: 12px; color: var(--muted); }
+.fx span { display: inline-flex; align-items: center; gap: 4px; border: 1px solid var(--line); padding: 3px 9px; border-radius: 999px; }
+.tcard { transition: transform .35s cubic-bezier(.22,.8,.2,1), box-shadow .35s; }
+.tcard:hover { transform: translateY(-6px); box-shadow: 0 22px 44px rgba(91,42,74,.14); }
+.tprev { position: relative; overflow: hidden; }
+.tprev .tt { transition: transform .6s cubic-bezier(.22,.8,.2,1); }
+.tcard:hover .tprev .tt { transform: scale(1.08); }
+.tprev::after {
+  content: ""; position: absolute; inset: 14px; border: 1px solid currentColor; opacity: .25; border-radius: 120px 120px 10px 10px;
+  transition: inset .6s cubic-bezier(.22,.8,.2,1), opacity .6s;
+}
+.tcard:hover .tprev::after { inset: 22px; opacity: .45; }
+.tprev .spark { position: absolute; width: 8px; height: 8px; opacity: 0; color: var(--fg); }
+.tcard:hover .tprev .spark { animation: sparkUp 1.6s ease-in-out infinite; }
+.tprev .spark:nth-of-type(2) { left: 20%; bottom: 20%; animation-delay: .3s !important; }
+.tprev .spark:nth-of-type(3) { right: 18%; bottom: 30%; animation-delay: .8s !important; }
+.tprev .spark:nth-of-type(4) { left: 70%; bottom: 12%; animation-delay: 1.1s !important; }
+@keyframes sparkUp { 0% { opacity: 0; transform: translateY(0) scale(.4); } 40% { opacity: .9; } 100% { opacity: 0; transform: translateY(-120px) scale(1); } }
+
+/* Animasi muncul landing */
+.rv { opacity: 0; transform: translateY(28px); transition: opacity .8s ease, transform .9s cubic-bezier(.22,.8,.2,1); }
+.rv.in { opacity: 1; transform: none; }
+.phone { animation: phoneFloat 6s ease-in-out infinite; }
+@keyframes phoneFloat { 0%, 100% { transform: translateY(0) rotate(-1deg); } 50% { transform: translateY(-12px) rotate(1deg); } }
 
 /* Langkah */
 .steps { margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 24px; }
@@ -185,4 +230,9 @@ h2 { margin: 0; font-family: var(--display); font-size: clamp(2rem, 3.5vw, 2.8re
 .wa-float:hover { color: #fff; background: #187540; }
 .wa-float svg { width: 28px; height: 28px; }
 
-@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } .btn { transition: none; } }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .btn, .tcard, .rv { transition: none; }
+  .rv { opacity: 1; transform: none; }
+  .phone, .tcard:hover .tprev .spark { animation: none; }
+}

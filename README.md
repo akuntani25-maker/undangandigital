@@ -3,7 +3,11 @@
 Situs statis (HTML, CSS, JavaScript murni) untuk bisnis jasa undangan digital:
 
 - **Landing page** jasa: galeri template dengan filter, fitur, paket harga, cara order, FAQ, tombol WhatsApp.
-- **8 template undangan** yang benar-benar berfungsi (pernikahan, khitanan, aqiqah, ulang tahun, acara kantor).
+- **15 template undangan beranimasi** (pernikahan, syar'i, adat Jawa, pantai, tunangan, khitanan, aqiqah, ulang tahun anak, sweet 17, acara kantor):
+  layar memuat, 5 efek buka sampul (amplop, tirai, gerbang 3D, zoom, geser), partikel melayang
+  (kelopak, daun, bintang, kilau, gelembung, konfeti, hati), judul muncul per huruf, ornamen yang "tergambar",
+  bagian yang muncul bergantian saat di-scroll, menu navigasi bawah, tombol gulir otomatis & musik.
+- **Ekstra kustom domain** di halaman harga + panduan pemasangannya (bagian 7).
 - **Pembuat link tamu** untuk membuat link bernama per tamu + pesan WhatsApp + unduh CSV.
 - **Backend RSVP & ucapan gratis** memakai Google Sheets (opsional).
 
@@ -25,9 +29,8 @@ Tidak perlu build, tidak perlu `npm install`. Langsung bisa di-deploy ke Vercel.
 │   ├── js/invitation.js       Mesin undangan (cover, countdown, RSVP, dll.)
 │   ├── img/                   Foto klien
 │   └── audio/                 Musik latar
-├── templates/                 8 demo template (dibuka dari landing page)
-│   ├── sakura-pastel/  jawa-klasik/  botanical-sage/  minimalis-mono/
-│   └── emerald-islami/ baby-bloom/   confetti-pop/    navy-corporate/
+├── assets/js/templates-data.js  Daftar template yang tampil di landing page
+├── templates/                 15 demo template (dibuka dari landing page)
 ├── u/                         Undangan pesanan klien (satu folder per klien)
 ├── tools/link-tamu.html       Pembuat link tamu
 └── backend/google-apps-script.gs   Kode untuk RSVP & ucapan ke Google Sheets
@@ -113,14 +116,21 @@ Domain sendiri (mis. `undanganku.id`) bisa ditambahkan di **Project → Settings
 |---|---|
 | `slug` | ID unik undangan |
 | `timeZone` | `Asia/Jakarta` (WIB), `Asia/Makassar` (WITA), `Asia/Jayapura` (WIT) |
-| `theme.ornament` | `floral`, `batik`, `leaf`, `line`, `islamic`, `cloud`, `confetti`, `geo` |
+| `theme.opening` | Efek buka sampul: `envelope`, `curtain`, `gate`, `zoom`, `slide-up` |
+| `theme.particles` | `petals`, `leaves`, `stars`, `sparkle`, `bubbles`, `confetti`, `hearts`, `snow`, `none` |
+| `theme.ornament` | `floral`, `batik`, `leaf`, `line`, `islamic`, `cloud`, `confetti`, `geo`, `deco`, `wave`, `arch`, `sparkle` |
+| `theme.frame` | Bingkai foto/monogram di sampul: `arch`, `circle`, `none` |
+| `theme.pattern` | Pola latar halus: `dots`, `grid`, `diamond` (opsional) |
+| `monogram` | Teks di bingkai & layar memuat bila belum ada foto (default: inisial dari judul) |
+| `autoScroll` | `false` untuk menyembunyikan tombol gulir otomatis |
 | `music` | Path mp3, mis. `/assets/audio/lagu.mp3` (kosong = tanpa musik) |
-| `cover` | `eyebrow`, `title`, `toLabel`, `note`, `button` |
+| `cover` | `eyebrow`, `title`, `photo` (foto sampul), `toLabel`, `note`, `button` |
 | `hero` | `eyebrow`, `title`, `text` |
 | `opening` | `arabic` (opsional), `greeting`, `text` |
 | `quote` | `text`, `source` |
-| `hosts` | `heading`, `joiner` (mis. `&`), `people: [{ role, name, parents, photo, instagram }]` |
-| `events` | `[{ name, start, end, timeText, venue, address, mapsUrl }]` — `start`/`end` format `2027-02-14T08:00:00+08:00` |
+| `hosts` | `heading`, `joiner` (mis. `&`), `hidePhotos` (untuk undangan syar'i), `people: [{ role, name, parents, photo, instagram }]` |
+| `events` | `[{ name, start, end, timeText, venue, address, mapsUrl, mapEmbed, mapQuery }]` — `start`/`end` format `2027-02-14T08:00:00+08:00`; `mapEmbed: true` menampilkan peta langsung di undangan |
+| `video` | `youtubeId` (kode setelah `v=` di link YouTube), `heading`, `text` |
 | `dresscode` | `text`, `colors: ['#hex', ...]` |
 | `rundown` / `story` | `heading`, `items: [{ when, title, text }]` |
 | `gallery` | `photos: [{ src, alt }]` atau `placeholders: 5` |
@@ -166,7 +176,33 @@ Setiap kali kode Apps Script diubah, buat **deployment versi baru** agar perubah
 
 ---
 
-## 7. Foto & musik
+## 7. Ekstra kustom domain (mis. `rakadannadia.com`)
+
+Satu project Vercel bisa melayani banyak domain klien. Setiap domain diarahkan ke folder undangannya.
+
+1. **Beli domain** atas nama klien di registrar (Niagahoster, DomaiNesia, IDCloudHost, dll.).
+2. **Tambahkan ke Vercel:** Project → **Settings → Domains → Add**, ketik `rakadannadia.com`
+   (Vercel akan menawarkan juga `www.rakadannadia.com`; terima saja).
+3. **Atur DNS** di panel registrar persis seperti yang ditampilkan Vercel (biasanya satu record **A** untuk domain utama
+   dan satu **CNAME** untuk `www`). Tunggu sampai status di Vercel menjadi **Valid** (beberapa menit sampai 48 jam). HTTPS dipasang otomatis.
+4. **Arahkan domain ke folder klien** dengan menambah aturan di `vercel.json` bagian `"rewrites"`:
+
+```json
+"rewrites": [
+  {
+    "source": "/",
+    "has": [{ "type": "host", "value": "(www\\.)?rakadannadia\\.com" }],
+    "destination": "/u/raka-nadia/index.html"
+  }
+]
+```
+
+   Tambah satu blok seperti itu untuk setiap domain klien. Upload ke GitHub → Vercel memperbarui otomatis.
+5. Link tamu menjadi `https://rakadannadia.com/?to=Budi+Santoso`. Di alat **link tamu**, isi link undangan dengan `https://rakadannadia.com`.
+
+Saat masa aktif habis dan klien tidak memperpanjang: hapus blok rewrite-nya dan hapus domain dari Vercel.
+
+## 8. Foto & musik
 
 - Foto: lihat `assets/img/README.md` (kompres dulu agar cepat terbuka).
 - Musik: lihat `assets/audio/README.md`. Gunakan musik bebas royalti/berlisensi.

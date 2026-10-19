@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bayu &amp; Laras — Beach Wedding</title>
+<meta name="description" content="Undangan pernikahan Bayu &amp; Laras — template Ocean Breeze">
+<meta name="theme-color" content="#EAF6F7">
+<meta property="og:title" content="Bayu &amp; Laras — Beach Wedding">
+<meta property="og:description" content="Sabtu, 24 Juli 2027. Kami mengundang Anda untuk hadir.">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@400;600;700&family=Sacramento&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="/assets/css/invitation.css">
+<style>
+  :root {
+    --bg: #EAF6F7; --bg-2: #CDEBEE; --surface: #FFFFFF; --ink: #10364A; --muted: #3F6375;
+    --accent: #0F6E8C; --accent-ink: #FFFFFF; --accent-2: #F2B58C; --line: #C3E1E6; --particle: #7FC4D6;
+    --font-display: 'Josefin Sans', system-ui, sans-serif;
+    --font-script: 'Sacramento', cursive;
+    --font-body: 'Plus Jakarta Sans', system-ui, sans-serif;
+    --script-size: 1.12;
+    --radius: 26px;
+  }
+  .block h2 { text-transform: uppercase; letter-spacing: .1em; font-size: clamp(1.4rem, 5vw, 1.7rem); }
+  .hero::after {
+    content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 90px; pointer-events: none;
+    background: radial-gradient(60px 22px at 30px 100%, var(--line) 98%, transparent) repeat-x; background-size: 60px 90px; opacity: .6;
+  }
+</style>
+</head>
+<body>
+<noscript><p style="padding:24px;text-align:center">Aktifkan JavaScript untuk membuka undangan ini.</p></noscript>
+<script src="/site.config.js"></script>
+<script>
+window.INVITATION = {
+  slug: 'ocean-breeze',
+  timeZone: 'Asia/Makassar',
+  theme: { opening: 'slide-up', particles: 'bubbles', ornament: 'wave', frame: 'circle' },
+  music: '',
+  cover: { eyebrow: 'Beach Wedding', title: 'Bayu & Laras' },
+  hero: { eyebrow: 'Join us by the sea', text: 'Ombak, pasir, dan matahari terbenam — saksi janji kami.' },
+  opening: { text: 'Dengan bahagia, kami mengundang Anda merayakan pernikahan kami di tepi pantai.' },
+  hosts: {
+    eyebrow: 'Mempelai', heading: 'Bayu & Laras', joiner: '&',
+    people: [
+      { role: 'The Groom', name: 'Bayu Samudra', parents: 'Putra dari Bapak Ketut Arya & Ibu Made Sari' },
+      { role: 'The Bride', name: 'Larasati Dewi', parents: 'Putri dari Bapak Lalu Hamzah & Ibu Baiq Nurul' }
+    ]
+  },
+  events: [
+    { name: 'Sunset Ceremony', start: '2027-07-24T16:30:00+08:00', end: '2027-07-24T18:00:00+08:00', timeText: 'Pukul 16.30 WITA', venue: 'Pantai Selong Belanak', address: 'Lombok Tengah, NTB', mapsUrl: 'https://maps.google.com/?q=Pantai+Selong+Belanak', mapEmbed: true, mapQuery: 'Pantai Selong Belanak' },
+    { name: 'Beach Dinner', start: '2027-07-24T18:30:00+08:00', end: '2027-07-24T21:30:00+08:00', timeText: 'Pukul 18.30 – 21.30 WITA', venue: 'Beachfront Lawn', address: 'Lombok Tengah, NTB', mapsUrl: 'https://maps.google.com/?q=Selong+Belanak' }
+  ],
+  dresscode: { text: 'Dresscode: putih, biru laut & sandal nyaman', colors: ['#FFFFFF', '#0F6E8C', '#F2B58C'] },
+  rundown: {
+    eyebrow: 'Agenda', heading: 'Susunan Acara',
+    items: [
+      { when: '16.30', title: 'Kedatangan Tamu' },
+      { when: '17.00', title: 'Upacara Pernikahan' },
+      { when: '18.00', title: 'Foto Matahari Terbenam' },
+      { when: '18.30', title: 'Makan Malam & Hiburan' }
+    ]
+  },
+  gallery: { heading: 'Galeri', placeholders: 5 },
+  gift: { text: 'Bila ingin memberi tanda kasih:', accounts: [ { bank: 'Bank BNI', number: '0456789123', holder: 'Larasati Dewi' }, { bank: 'OVO', number: '081355551234', holder: 'Bayu Samudra' } ] },
+  rsvp: { maxGuests: 2 },
+  wishes: true,
+  endpoint: '',
+  closing: { text: 'Sampai jumpa di tepi pantai!', signatureLabel: 'With love', signature: 'Bayu & Laras' }
+};
+</script>
+<script src="/assets/js/invitation.js"></script>
+</body>
+</html>

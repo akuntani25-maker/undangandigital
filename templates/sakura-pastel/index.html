@@ -15,8 +15,8 @@
 <link rel="stylesheet" href="/assets/css/invitation.css">
 <style>
   :root {
-    --bg: #FBEFF1; --surface: #FFFFFF; --ink: #4A2232; --muted: #78515F;
-    --accent: #9C4A64; --accent-ink: #FFFFFF; --accent-2: #E9A2B5; --line: #EBCBD3;
+    --bg: #FBEFF1; --bg-2: #F6D9E1; --surface: #FFFFFF; --ink: #4A2232; --muted: #78515F;
+    --accent: #9C4A64; --accent-ink: #FFFFFF; --accent-2: #E9A2B5; --line: #EBCBD3; --particle: #F2A7BC;
     --font-display: 'Playfair Display', Georgia, serif;
     --font-script: 'Great Vibes', cursive;
     --font-body: 'Plus Jakarta Sans', system-ui, sans-serif;
@@ -30,15 +30,15 @@
 window.INVITATION = {
   slug: 'sakura-pastel',
   timeZone: 'Asia/Makassar',
-  theme: { ornament: 'floral' },
+  theme: { opening: 'envelope', particles: 'petals', ornament: 'floral', frame: 'arch', pattern: 'dots' },
   music: '',
-  cover: { eyebrow: 'The Wedding of', title: 'Raka & Nadia' },
+  cover: { eyebrow: 'The Wedding of', title: 'Raka & Nadia', photo: '' },
   hero: { text: 'Dengan penuh syukur, kami mengundang Anda untuk merayakan hari bahagia kami.' },
   opening: {
     greeting: "Assalamu'alaikum Warahmatullahi Wabarakatuh",
     text: 'Tanpa mengurangi rasa hormat, kami bermaksud mengundang Bapak/Ibu/Saudara/i untuk hadir di acara pernikahan kami.'
   },
-  quote: { text: 'Dua hati yang dipertemukan dengan cara yang paling sederhana, untuk saling menjaga dalam waktu yang paling lama.', source: 'Raka & Nadia' },
+  quote: { text: 'Dua hati yang dipertemukan dengan cara paling sederhana, untuk saling menjaga dalam waktu paling lama.', source: 'Raka & Nadia' },
   hosts: {
     eyebrow: 'Mempelai', heading: 'Kami yang Berbahagia', joiner: '&',
     people: [
@@ -48,7 +48,7 @@ window.INVITATION = {
   },
   events: [
     { name: 'Akad Nikah', start: '2027-02-14T08:00:00+08:00', end: '2027-02-14T10:00:00+08:00', timeText: 'Pukul 08.00 – 10.00 WITA', venue: 'Masjid Raya Al-Falah', address: 'Jl. Contoh No. 1, Kota Anda', mapsUrl: 'https://maps.google.com/?q=Masjid' },
-    { name: 'Resepsi', start: '2027-02-14T11:00:00+08:00', end: '2027-02-14T14:00:00+08:00', timeText: 'Pukul 11.00 – 14.00 WITA', venue: 'Gedung Serbaguna Melati', address: 'Jl. Contoh No. 2, Kota Anda', mapsUrl: 'https://maps.google.com/?q=Gedung' }
+    { name: 'Resepsi', start: '2027-02-14T11:00:00+08:00', end: '2027-02-14T14:00:00+08:00', timeText: 'Pukul 11.00 – 14.00 WITA', venue: 'Gedung Serbaguna Melati', address: 'Jl. Contoh No. 2, Kota Anda', mapsUrl: 'https://maps.google.com/?q=Gedung', mapEmbed: true }
   ],
   dresscode: { text: 'Dresscode: nuansa pastel', colors: ['#F7D6DE', '#E9C6D9', '#F5E6CC'] },
   story: {
@@ -63,10 +63,7 @@ window.INVITATION = {
   streaming: { url: 'https://youtube.com', text: 'Bagi yang berhalangan hadir, akad dapat disaksikan secara langsung.' },
   gift: {
     text: 'Doa restu Anda adalah hadiah terindah. Bila ingin memberi tanda kasih, dapat melalui:',
-    accounts: [
-      { bank: 'Bank BCA', number: '1234567890', holder: 'Raka Pratama' },
-      { bank: 'DANA', number: '081234567890', holder: 'Nadia Kusuma' }
-    ],
+    accounts: [ { bank: 'Bank BCA', number: '1234567890', holder: 'Raka Pratama' }, { bank: 'DANA', number: '081234567890', holder: 'Nadia Kusuma' } ],
     address: 'Jl. Contoh No. 3, Kota Anda, 83600'
   },
   rsvp: { maxGuests: 3 },

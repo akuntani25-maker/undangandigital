@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Wedding of Adrian &amp; Clarissa</title>
+<meta name="description" content="Undangan pernikahan Adrian &amp; Clarissa — template Midnight Gold">
+<meta name="theme-color" content="#0C0D12">
+<meta property="og:title" content="The Wedding of Adrian &amp; Clarissa">
+<meta property="og:description" content="Sabtu, 12 Juni 2027. Kami mengundang Anda untuk hadir.">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Italianno&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="/assets/css/invitation.css">
+<style>
+  :root {
+    --bg: #0C0D12; --bg-2: #1B1A22; --surface: #15161D; --ink: #F4EBD6; --muted: #BDB29A;
+    --accent: #D6B46A; --accent-ink: #0C0D12; --accent-2: #8E7135; --line: #2E2B27; --particle: #E9CF8B;
+    --font-display: 'Cinzel', Georgia, serif;
+    --font-script: 'Italianno', cursive;
+    --font-body: 'Plus Jakarta Sans', system-ui, sans-serif;
+    --script-size: 1.15;
+    --radius: 4px;
+  }
+  .block h2, .host .name, .card h3 { letter-spacing: .06em; }
+  .btn { border-radius: 2px; letter-spacing: .08em; text-transform: uppercase; font-size: 13px; }
+  .card, .quote { border-color: color-mix(in srgb, var(--accent) 35%, transparent); }
+</style>
+</head>
+<body>
+<noscript><p style="padding:24px;text-align:center">Aktifkan JavaScript untuk membuka undangan ini.</p></noscript>
+<script src="/site.config.js"></script>
+<script>
+window.INVITATION = {
+  slug: 'midnight-gold',
+  timeZone: 'Asia/Jakarta',
+  theme: { opening: 'gate', particles: 'stars', ornament: 'deco', frame: 'arch' },
+  music: '',
+  cover: { eyebrow: 'The Wedding of', title: 'Adrian & Clarissa' },
+  hero: { eyebrow: 'Save the Date', text: 'Malam yang kami nantikan, bersama orang-orang yang paling kami sayangi.' },
+  opening: { text: 'Dengan penuh sukacita, kami mengundang Anda untuk merayakan janji suci dan pesta pernikahan kami.' },
+  quote: { text: 'Cinta tidak saling memandang, melainkan bersama memandang ke arah yang sama.', source: 'Adrian & Clarissa' },
+  hosts: {
+    eyebrow: 'The Couple', heading: 'Mempelai', joiner: '&',
+    people: [
+      { role: 'The Groom', name: 'Adrian Wijaya', parents: 'Putra dari Bapak Stefanus Wijaya & Ibu Maria Lim', instagram: 'adrian.wijaya' },
+      { role: 'The Bride', name: 'Clarissa Tanoto', parents: 'Putri dari Bapak Hartono Tanoto & Ibu Linda Gunawan', instagram: 'clarissa.t' }
+    ]
+  },
+  events: [
+    { name: 'Holy Matrimony', start: '2027-06-12T10:00:00+07:00', end: '2027-06-12T12:00:00+07:00', timeText: 'Pukul 10.00 WIB', venue: 'Gereja Katedral', address: 'Jl. Contoh No. 21, Jakarta Pusat', mapsUrl: 'https://maps.google.com/?q=Katedral+Jakarta' },
+    { name: 'Wedding Reception', start: '2027-06-12T19:00:00+07:00', end: '2027-06-12T22:00:00+07:00', timeText: 'Pukul 19.00 – 22.00 WIB', venue: 'The Grand Ballroom', address: 'Jl. Contoh No. 22, Jakarta Selatan', mapsUrl: 'https://maps.google.com/?q=Ballroom+Jakarta', mapEmbed: true }
+  ],
+  dresscode: { text: 'Dresscode: black tie, aksen emas', colors: ['#0C0D12', '#D6B46A', '#F4EBD6'] },
+  story: {
+    eyebrow: 'Our Journey', heading: 'Perjalanan Kami',
+    items: [
+      { when: 'Paris, 2019', title: 'Takdir di Kota Cahaya', text: 'Dua pelajar perantauan bertemu di sebuah toko buku tua.' },
+      { when: 'Jakarta, 2022', title: 'Pulang Bersama', text: 'Kembali ke tanah air dan memulai babak baru.' },
+      { when: 'Bali, 2026', title: 'The Proposal', text: 'Di bawah langit senja, sebuah pertanyaan dijawab dengan "ya".' }
+    ]
+  },
+  gallery: { heading: 'Galeri', placeholders: 7 },
+  streaming: { url: 'https://youtube.com', text: 'Saksikan pemberkatan secara langsung.' },
+  gift: {
+    text: 'Kehadiran dan doa Anda adalah hadiah terbaik. Bila ingin memberi tanda kasih:',
+    accounts: [ { bank: 'Bank BCA', number: '5550001234', holder: 'Adrian Wijaya' }, { bank: 'Bank Mandiri', number: '1370012345678', holder: 'Clarissa Tanoto' } ]
+  },
+  rsvp: { maxGuests: 2, text: 'Mohon konfirmasi sebelum 1 Juni 2027.' },
+  wishes: true,
+  endpoint: '',
+  closing: { text: 'Terima kasih atas doa dan restu Anda. Sampai jumpa di malam bahagia kami.', signatureLabel: 'With love', signature: 'Adrian & Clarissa' }
+};
+</script>
+<script src="/assets/js/invitation.js"></script>
+</body>
+</html>

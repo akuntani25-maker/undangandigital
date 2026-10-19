@@ -52,9 +52,28 @@ function doPost(e) {
   }
 }
 
+// ?type=stats&slug=... → rekap kehadiran (satu nama dihitung sekali, jawaban terakhir)
+function stats_(slug) {
+  var rows = getSheet_('RSVP', HEAD_RSVP).getDataRange().getValues().slice(1)
+    .filter(function (r) { return String(r[1]) === slug; });
+  var latest = {};
+  rows.forEach(function (r) { latest[String(r[2]).toLowerCase().trim()] = r; });
+  var out = { hadir: 0, tidak: 0, ragu: 0, orang: 0 };
+  Object.keys(latest).forEach(function (k) {
+    var a = String(latest[k][3]).toLowerCase();
+    if (/tidak|maaf|berhalangan/.test(a)) out.tidak++;
+    else if (/ragu|belum/.test(a)) out.ragu++;
+    else { out.hadir++; out.orang += Number(latest[k][4]) || 1; }
+  });
+  return out;
+}
+
 // Mengembalikan daftar ucapan untuk satu undangan: ?slug=nama-undangan
 function doGet(e) {
   var slug = (e && e.parameter && e.parameter.slug) || '';
+  if (e && e.parameter && e.parameter.type === 'stats') {
+    return ContentService.createTextOutput(JSON.stringify(stats_(slug))).setMimeType(ContentService.MimeType.JSON);
+  }
   var sh = getSheet_('Ucapan', HEAD_WISH);
   var rows = sh.getDataRange().getValues().slice(1)
     .filter(function (r) { return String(r[1]) === slug; })

@@ -207,6 +207,14 @@ Saat masa aktif habis dan klien tidak memperpanjang: hapus blok rewrite-nya dan 
 - Foto: lihat `assets/img/README.md` (kompres dulu agar cepat terbuka).
 - Musik: lihat `assets/audio/README.md`. Gunakan musik bebas royalti/berlisensi.
 
+## Setelah mengubah file CSS/JS
+
+Setiap link ke file `.css`/`.js` memakai nomor versi, mis. `/assets/css/landing.css?v=2`.
+Bila Anda mengubah isi file di `assets/` atau `site.config.js`, naikkan nomornya (cari-ganti `?v=2` → `?v=3`
+di semua file `.html`) agar browser pengunjung langsung memakai versi terbaru, bukan versi lama yang tersimpan.
+
+Bila halaman tampak berantakan setelah update, coba buka di tab penyamaran (incognito) atau tekan **Ctrl+Shift+R**.
+
 ## Catatan
 
 - Nama, tanggal, alamat, dan nomor rekening di template adalah **contoh fiktif** untuk demo.

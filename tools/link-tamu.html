@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Pembuat Link Tamu</title>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap">
+<script src="/site.config.js"></script>
+<style>
+  :root { --ink:#241A22; --muted:#5E4F59; --plum:#5B2A4A; --blush:#F6ECEA; --line:#EFE4E2; }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: 'Plus Jakarta Sans', system-ui, sans-serif; color: var(--ink); background: var(--blush); line-height: 1.55; }
+  .wrap { max-width: 960px; margin: 0 auto; padding: 40px 20px 80px; display: flex; flex-direction: column; gap: 24px; }
+  h1 { font-family: 'Playfair Display', serif; font-size: clamp(1.8rem, 4vw, 2.4rem); margin: 0; }
+  .lead { margin: 0; color: var(--muted); }
+  .panel { background: #fff; border-radius: 20px; padding: 24px; display: flex; flex-direction: column; gap: 16px; }
+  label { font-weight: 600; font-size: 14px; display: block; margin-bottom: 6px; }
+  .hint { font-size: 13px; color: var(--muted); margin-top: 4px; }
+  input, textarea { width: 100%; font: inherit; padding: 12px 14px; border: 1.5px solid #E2CFD6; border-radius: 12px; background: #fff; color: inherit; }
+  textarea { min-height: 150px; resize: vertical; }
+  input:focus-visible, textarea:focus-visible, button:focus-visible, a:focus-visible { outline: 3px solid #C98A9B; outline-offset: 2px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+  .btns { display: flex; flex-wrap: wrap; gap: 10px; }
+  button, .btn { font: inherit; font-weight: 600; font-size: 14px; min-height: 44px; padding: 10px 18px; border-radius: 999px; border: 1.5px solid var(--plum); background: var(--plum); color: #fff; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; }
+  button.ghost, .btn.ghost { background: #fff; color: var(--plum); }
+  .count { font-size: 14px; color: var(--muted); }
+  .table-box { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; min-width: 640px; }
+  th, td { text-align: left; padding: 10px 8px; border-bottom: 1px solid var(--line); vertical-align: middle; }
+  th { font-size: 12px; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); }
+  td.link { word-break: break-all; color: var(--plum); }
+  td .btns { flex-wrap: nowrap; gap: 6px; }
+  td button, td .btn { min-height: 36px; padding: 6px 12px; font-size: 13px; }
+  a.back { color: var(--plum); font-weight: 600; text-decoration: none; }
+  .toast { position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%); background: var(--ink); color: #fff; padding: 10px 18px; border-radius: 999px; font-size: 14px; opacity: 0; transition: .2s; pointer-events: none; }
+  .toast.show { opacity: 1; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="/">← Kembali ke beranda</a>
+  <div>
+    <h1>Pembuat Link Tamu</h1>
+    <p class="lead">Tempel daftar nama tamu, lalu salin link undangan bernama untuk masing-masing tamu atau kirim langsung lewat WhatsApp.</p>
+  </div>
+
+  <div class="panel">
+    <div>
+      <label for="base">Link undangan</label>
+      <input id="base" type="url" placeholder="https://domainanda.vercel.app/u/raka-nadia">
+      <div class="hint">Link undangan klien tanpa <code>?to=</code>. Contoh: <code>https://domainanda.vercel.app/u/raka-nadia</code></div>
+    </div>
+    <div class="grid">
+      <div>
+        <label for="names">Daftar nama tamu (satu nama per baris)</label>
+        <textarea id="names" placeholder="Budi Santoso&#10;Ibu Rina &amp; Keluarga&#10;Keluarga Bpk. Hendra"></textarea>
+      </div>
+      <div>
+        <label for="tpl">Template pesan WhatsApp</label>
+        <textarea id="tpl"></textarea>
+        <div class="hint">Gunakan <code>{nama}</code> dan <code>{link}</code>.</div>
+      </div>
+    </div>
+    <div class="btns">
+      <button type="button" id="gen">Buat Link</button>
+      <button type="button" class="ghost" id="copy-all">Salin Semua Pesan</button>
+      <button type="button" class="ghost" id="csv">Unduh CSV</button>
+    </div>
+    <div class="count" id="count" role="status" aria-live="polite"></div>
+    <div class="table-box">
+      <table>
+        <thead><tr><th>Nama</th><th>Link</th><th>Aksi</th></tr></thead>
+        <tbody id="out"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(function () {
+  var S = window.SITE || {};
+  var base = document.getElementById('base');
+  var names = document.getElementById('names');
+  var tpl = document.getElementById('tpl');
+  var out = document.getElementById('out');
+  var count = document.getElementById('count');
+  var toastEl = document.getElementById('toast');
+  var rows = [];
+
+  base.value = (S.siteUrl || location.origin).replace(/\/$/, '') + '/templates/sakura-pastel';
+  tpl.value = 'Kepada Yth.\nBapak/Ibu/Saudara/i *{nama}*\n\nTanpa mengurangi rasa hormat, perkenankan kami mengundang Anda untuk hadir di acara kami.\n\nInfo lengkap acara:\n{link}\n\nMerupakan suatu kebahagiaan bagi kami apabila Anda berkenan hadir dan memberikan doa restu.\n\nTerima kasih.';
+
+  function toast(m) { toastEl.textContent = m; toastEl.classList.add('show'); clearTimeout(toast.t); toast.t = setTimeout(function () { toastEl.classList.remove('show'); }, 1800); }
+  function copy(text) {
+    if (navigator.clipboard && window.isSecureContext) return navigator.clipboard.writeText(text).then(function () { toast('Tersalin'); });
+    var ta = document.createElement('textarea'); ta.value = text; document.body.appendChild(ta); ta.select();
+    try { document.execCommand('copy'); toast('Tersalin'); } catch (e) {}
+    ta.remove();
+  }
+  function linkFor(n) {
+    var b = base.value.trim().replace(/\?.*$/, '');
+    return b + '?to=' + encodeURIComponent(n).replace(/%20/g, '+');
+  }
+  function msgFor(r) { return tpl.value.split('{nama}').join(r.name).split('{link}').join(r.link); }
+  function btn(text, cls, fn) { var b = document.createElement('button'); b.type = 'button'; b.textContent = text; if (cls) b.className = cls; b.addEventListener('click', fn); return b; }
+
+  function generate() {
+    var list = names.value.split(/\r?\n/).map(function (s) { return s.trim(); }).filter(Boolean);
+    rows = list.map(function (n) { return { name: n, link: linkFor(n) }; });
+    out.replaceChildren();
+    rows.forEach(function (r) {
+      var tr = document.createElement('tr');
+      var td1 = document.createElement('td'); td1.textContent = r.name;
+      var td2 = document.createElement('td'); td2.className = 'link'; td2.textContent = r.link;
+      var td3 = document.createElement('td');
+      var box = document.createElement('div'); box.className = 'btns';
+      box.append(
+        btn('Salin Link', 'ghost', function () { copy(r.link); }),
+        btn('Salin Pesan', 'ghost', function () { copy(msgFor(r)); })
+      );
+      var wa = document.createElement('a'); wa.className = 'btn'; wa.target = '_blank'; wa.rel = 'noopener';
+      wa.href = 'https://wa.me/?text=' + encodeURIComponent(msgFor(r)); wa.textContent = 'Kirim WA';
+      box.append(wa);
+      td3.append(box);
+      tr.append(td1, td2, td3);
+      out.append(tr);
+    });
+    count.textContent = rows.length ? rows.length + ' link dibuat.' : 'Belum ada nama tamu.';
+  }
+
+  document.getElementById('gen').addEventListener('click', generate);
+  document.getElementById('copy-all').addEventListener('click', function () {
+    if (!rows.length) generate();
+    if (rows.length) copy(rows.map(msgFor).join('\n\n———\n\n'));
+  });
+  document.getElementById('csv').addEventListener('click', function () {
+    if (!rows.length) generate();
+    if (!rows.length) return;
+    function q(s) { s = String(s); if (/^[=+\-@]/.test(s)) s = "'" + s; return '"' + s.replace(/"/g, '""') + '"'; }
+    var csv = 'Nama,Link,Pesan\n' + rows.map(function (r) { return [q(r.name), q(r.link), q(msgFor(r))].join(','); }).join('\n');
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8' }));
+    a.download = 'link-tamu.csv'; a.click();
+    setTimeout(function () { URL.revokeObjectURL(a.href); }, 1000);
+  });
+})();
+</script>
+</body>
+</html>

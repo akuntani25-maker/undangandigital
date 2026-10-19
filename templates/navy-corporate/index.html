@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gathering Tahunan 2027 — Undangan</title>
+<meta name="description" content="Undangan acara kantor — template Navy Corporate">
+<meta name="theme-color" content="#0F1A30">
+<meta property="og:title" content="Gathering Tahunan 2027">
+<meta property="og:description" content="Jumat, 15 Januari 2027. Anda diundang.">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="/assets/css/invitation.css">
+<style>
+  :root {
+    --bg: #0F1A30; --surface: #16233F; --ink: #F2F5FA; --muted: #AEB9CE;
+    --accent: #F5B83D; --accent-ink: #0F1A30; --accent-2: #7A5A18; --line: #263555;
+    --font-display: 'Plus Jakarta Sans', system-ui, sans-serif;
+    --font-script: 'Plus Jakarta Sans', system-ui, sans-serif;
+    --font-body: 'Plus Jakarta Sans', system-ui, sans-serif;
+    --script-size: .62;
+    --radius: 14px;
+  }
+  .title-script, .script-sm { font-weight: 800; letter-spacing: -.02em; }
+  .block h2 { font-weight: 800; letter-spacing: -.01em; }
+</style>
+</head>
+<body>
+<noscript><p style="padding:24px;text-align:center">Aktifkan JavaScript untuk membuka undangan ini.</p></noscript>
+<script src="/site.config.js"></script>
+<script>
+window.INVITATION = {
+  slug: 'navy-corporate',
+  timeZone: 'Asia/Jakarta',
+  theme: { ornament: 'geo' },
+  music: '',
+  cover: { eyebrow: 'You are invited', title: 'Gathering Tahunan 2027', toLabel: 'Kepada Yth.', note: 'Undangan ini bersifat pribadi', button: 'Lihat Undangan' },
+  hero: { eyebrow: 'PT Contoh Nusantara', title: 'Gathering Tahunan 2027', text: 'Merayakan pencapaian bersama dan menyambut tahun baru dengan semangat baru.' },
+  opening: { text: 'Dengan hormat, kami mengundang Bapak/Ibu untuk hadir pada acara Gathering Tahunan perusahaan.' },
+  events: [
+    { name: 'Gathering & Awarding Night', start: '2027-01-15T18:30:00+07:00', end: '2027-01-15T22:00:00+07:00', timeText: 'Pukul 18.30 – 22.00 WIB', venue: 'Grand Ballroom Hotel Contoh', address: 'Jl. Contoh No. 99, Jakarta Pusat', mapsUrl: 'https://maps.google.com/?q=Jakarta' }
+  ],
+  eventsSection: { eyebrow: 'Detail Acara', heading: 'Waktu & Lokasi' },
+  dresscode: { text: 'Dresscode: formal, nuansa navy & gold', colors: ['#0F1A30', '#F5B83D', '#FFFFFF'] },
+  rundown: {
+    eyebrow: 'Agenda', heading: 'Rundown',
+    items: [
+      { when: '18.30', title: 'Registrasi & Welcome Drink' },
+      { when: '19.00', title: 'Sambutan Direksi', text: 'Refleksi 2026 dan arah 2027' },
+      { when: '19.30', title: 'Makan Malam' },
+      { when: '20.15', title: 'Awarding Night', text: 'Penghargaan karyawan & tim terbaik' },
+      { when: '21.30', title: 'Doorprize & Penutupan' }
+    ]
+  },
+  gallery: { heading: 'Momen Tahun Lalu', placeholders: 4 },
+  rsvp: { maxGuests: 1, options: ['Hadir', 'Tidak hadir'], heading: 'Registrasi Kehadiran', text: 'Mohon konfirmasi paling lambat 8 Januari 2027.' },
+  wishes: false,
+  endpoint: '',
+  closing: { text: 'Kehadiran Anda sangat berarti bagi kami. Sampai jumpa!', signatureLabel: 'Hormat kami', signature: 'Panitia Gathering 2027' }
+};
+</script>
+<script src="/assets/js/invitation.js"></script>
+</body>
+</html>

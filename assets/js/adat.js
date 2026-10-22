@@ -13,6 +13,7 @@
   var paintPoly = U.paintPoly, paintPath = U.paintPath, dabs = U.dabs, pflower = U.pflower, streaks = U.streaks, bbox = U.bbox;
   function rng(s) { return U.rng(s); }
 
+  var FACE_ID = 0;
   /* ---------- Orang berbusana adat (kecil, gaya lukisan) ---------- */
   function person(R, x, base, s, o) {
     var g = '', fem = o.female;
@@ -26,9 +27,21 @@
     g += E(x - 19 * s, base - 84 * s, 4.5 * s, 22 * s, 8, o.top) + E(x + 19 * s, base - 84 * s, 4.5 * s, 22 * s, -8, o.top);
     g += E(x - 20 * s, base - 62 * s, 3.4 * s, 3.4 * s, 0, o.skin) + E(x + 20 * s, base - 62 * s, 3.4 * s, 3.4 * s, 0, o.skin);
     if (o.sash) g += poly([[x - 15 * s, base - 106 * s], [x - 8 * s, base - 108 * s], [x + 16 * s, base - 66 * s], [x + 9 * s, base - 62 * s]], o.sash);
-    g += E(x, base - 112 * s, 4 * s, 5 * s, 0, darken(o.skin, .08)) + E(x, base - 124 * s, 10.5 * s, 12.5 * s, 0, o.skin);
-    g += E(x - 3.5 * s, base - 124 * s, 1.1 * s, 1.1 * s, 0, '#2A1A12') + E(x + 3.5 * s, base - 124 * s, 1.1 * s, 1.1 * s, 0, '#2A1A12') + E(x, base - 117 * s, 2.4 * s, 1 * s, 0, darken(o.skin, .3), .8);
-    g += o.head(R, x, base - 124 * s, s);
+    var hy = base - 124 * s, sk = o.skin, dk = '#2A1A12', cid = 'pfh' + (++FACE_ID);
+    var headSvg = o.head(R, x, hy, s);
+    g += E(x, base - 112 * s, 4 * s, 5 * s, 0, darken(sk, .08));
+    g += headSvg; /* rambut/tutup kepala di belakang wajah */
+    g += E(x - 10.4 * s, hy + 1 * s, 2 * s, 3 * s, 0, darken(sk, .05)) + E(x + 10.4 * s, hy + 1 * s, 2 * s, 3 * s, 0, darken(sk, .05));
+    g += E(x, hy, 10.5 * s, 12.5 * s, 0, sk);
+    /* wajah menghadap depan: alis, mata, pipi, hidung, senyum */
+    g += line('M' + f(x - 6 * s) + ' ' + f(hy - 3.6 * s) + ' q' + f(2.4 * s) + ' ' + f(-1.4 * s) + ' ' + f(4.6 * s) + ' 0', dk, .9 * s, .8) + line('M' + f(x + 1.4 * s) + ' ' + f(hy - 3.6 * s) + ' q' + f(2.4 * s) + ' ' + f(-1.4 * s) + ' ' + f(4.6 * s) + ' 0', dk, .9 * s, .8);
+    g += E(x - 3.7 * s, hy - .6 * s, 1.35 * s, 1.6 * s, 0, dk) + E(x + 3.7 * s, hy - .6 * s, 1.35 * s, 1.6 * s, 0, dk);
+    g += E(x - 3.3 * s, hy - 1.1 * s, .45 * s, .45 * s, 0, '#FFFFFF', .9) + E(x + 4.1 * s, hy - 1.1 * s, .45 * s, .45 * s, 0, '#FFFFFF', .9);
+    g += E(x - 6.4 * s, hy + 3.6 * s, 2.2 * s, 1.3 * s, 0, fem ? '#E8807A' : '#D9806A', fem ? .45 : .28) + E(x + 6.4 * s, hy + 3.6 * s, 2.2 * s, 1.3 * s, 0, fem ? '#E8807A' : '#D9806A', fem ? .45 : .28);
+    g += line('M' + f(x) + ' ' + f(hy + .4 * s) + ' l' + f(-.8 * s) + ' ' + f(3 * s) + ' l' + f(1.4 * s) + ' 0', darken(sk, .28), .8 * s, .7);
+    g += line('M' + f(x - 2.8 * s) + ' ' + f(hy + 6.2 * s) + ' Q' + f(x) + ' ' + f(hy + 8.6 * s) + ' ' + f(x + 2.8 * s) + ' ' + f(hy + 6.2 * s), fem ? '#B2443C' : darken(sk, .4), 1.1 * s, .9);
+    /* bagian dahi dari rambut/tutup kepala tampil di depan wajah */
+    g += '<clipPath id="' + cid + '"><rect x="' + f(x - 60 * s) + '" y="' + f(hy - 80 * s) + '" width="' + f(120 * s) + '" height="' + f(80 * s - 5.2 * s) + '"/></clipPath><g clip-path="url(#' + cid + ')">' + headSvg + '</g>';
     return g;
   }
   function couple(R, cx, base, s, groom, bride) {

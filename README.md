@@ -34,7 +34,8 @@ Tidak perlu build, tidak perlu `npm install`. Langsung bisa di-deploy ke Vercel.
 │   ├── img/                   Foto klien
 │   └── audio/                 Musik latar
 ├── assets/js/templates-data.js  Daftar template yang tampil di landing page
-├── templates/                 15 demo template (dibuka dari landing page)
+├── assets/img/thumbs/         Gambar sampul kartu template (nama-file = slug.webp, 520×960). Template baru tanpa gambar otomatis memakai kartu teks.
+├── templates/                 21 demo template (dibuka dari landing page)
 ├── u/                         Undangan pesanan klien (satu folder per klien)
 ├── tools/link-tamu.html       Pembuat link tamu
 └── backend/google-apps-script.gs   Kode untuk RSVP & ucapan ke Google Sheets
@@ -220,8 +221,8 @@ Saat masa aktif habis dan klien tidak memperpanjang: hapus blok rewrite-nya dan 
 
 ## Setelah mengubah file CSS/JS
 
-Setiap link ke file `.css`/`.js` memakai nomor versi, mis. `/assets/css/landing.css?v=5`.
-Bila Anda mengubah isi file di `assets/` atau `site.config.js`, naikkan nomornya (cari-ganti `?v=5` → `?v=6`
+Setiap link ke file `.css`/`.js` memakai nomor versi, mis. `/assets/css/landing.css?v=6`.
+Bila Anda mengubah isi file di `assets/` atau `site.config.js`, naikkan nomornya (cari-ganti `?v=6` → `?v=7`
 di semua file `.html`) agar browser pengunjung langsung memakai versi terbaru, bukan versi lama yang tersimpan.
 
 Bila halaman tampak berantakan setelah update, coba buka di tab penyamaran (incognito) atau tekan **Ctrl+Shift+R**.

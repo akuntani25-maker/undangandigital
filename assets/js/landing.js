@@ -28,6 +28,9 @@
         el('span', { class: 'dt', text: t.date })
       );
       for (var i = 0; i < 3; i++) { var s = el('span', { class: 'spark' }); s.innerHTML = SPARK; prev.appendChild(s); }
+      var shot = el('img', { class: 'tshot', src: '/assets/img/thumbs/' + t.slug + '.webp?v=6', alt: 'Tampilan sampul template ' + t.name, loading: 'lazy', decoding: 'async', width: '520', height: '960' });
+      shot.addEventListener('error', function () { this.parentNode.classList.remove('has-shot'); this.remove(); });
+      prev.classList.add('has-shot'); prev.appendChild(shot);
       var fx = el('div', { class: 'fx' }, el('span', { text: 'Gaya ' + t.px }), el('span', { text: 'Buka: ' + t.fx }));
       var card = el('article', { class: 'tcard rv', 'data-cat': t.cat },
         prev,

@@ -1,0 +1,474 @@
+/* =========================================================
+   GAYA TATA LETAK — dipilih lewat theme.style di data undangan:
+   botanical · editorial · collage · royal · watercolor
+   Tiap gaya punya bentuk panel, bingkai foto, galeri, efek buka & animasi sendiri.
+   ========================================================= */
+
+:root {
+  --fl-1: #E7A3B4; --fl-2: #C9667F; --fl-3: #FBE3E8; --leaf: #7FA37A; --leaf-2: #557D57;
+  --gold: #C9A45C; --seal: #8E1F2C; --branch: #6B4A3A;
+  --hill-1: #C9D8C0; --hill-2: #A9C1A0; --hill-3: #8AAE84;
+  --sky-1: #F6F1EA; --sky-2: #EFE6DA;
+  --drape: #6E1E2A; --tape: #F1E2C4; --env: #EFE7DA; --velvet: #3A0B12; --lace: #FBF7F0;
+}
+
+/* ---------- Umum ---------- */
+.panel { position: relative; }
+.deco { position: absolute; pointer-events: none; z-index: 3; }
+.deco svg { display: block; width: 100%; height: 100%; overflow: visible; }
+
+/* Foto contoh (placeholder) bergaya bokeh — diganti otomatis bila foto diisi */
+.ph {
+  background:
+    radial-gradient(circle at 24% 28%, rgba(255,255,255,.55) 0 5%, transparent 5.5%),
+    radial-gradient(circle at 72% 22%, rgba(255,255,255,.35) 0 8%, transparent 8.5%),
+    radial-gradient(circle at 62% 70%, rgba(255,255,255,.4) 0 4%, transparent 4.5%),
+    radial-gradient(circle at 30% 78%, rgba(255,255,255,.25) 0 10%, transparent 10.5%),
+    linear-gradient(160deg, color-mix(in srgb, var(--accent) 45%, var(--surface)), color-mix(in srgb, var(--accent-2) 60%, var(--surface))) !important;
+  color: var(--surface);
+}
+.ph .mono, .avatar.ph > span { color: #fff; text-shadow: 0 2px 12px rgba(0,0,0,.25); }
+.gallery .tile.ph { color: #fff; }
+.gallery .tile.ph svg { color: #fff !important; opacity: .9 !important; }
+.ph-label { font-size: 12px; letter-spacing: .1em; text-transform: uppercase; }
+
+/* Bunga mekar & daun tumbuh */
+.fl { transform-box: fill-box; transform-origin: center; transform: scale(0) rotate(-60deg); }
+.lf { transform-box: fill-box; transform-origin: bottom center; transform: scaleY(0); }
+.go .fl, .cover.go .fl, .side.go .fl { animation: bloom 1s cubic-bezier(.2, 1.3, .4, 1) forwards; animation-delay: calc(var(--d) * 110ms + 450ms); }
+.go .lf, .cover.go .lf, .side.go .lf { animation: grow .9s var(--ease) forwards; animation-delay: calc(var(--d) * 60ms + 200ms); }
+@keyframes bloom { to { transform: none; } }
+@keyframes grow { to { transform: none; } }
+.bq svg, .branch svg { animation: sway 7s ease-in-out 2.5s infinite alternate; transform-origin: 0 100%; }
+@keyframes sway { from { transform: rotate(0); } to { transform: rotate(3deg); } }
+
+/* Selotip */
+.tape {
+  position: absolute; top: -15px; left: 50%; width: 112px; height: 30px; z-index: 4;
+  transform: translateX(-50%) rotate(var(--r, -4deg));
+  background: color-mix(in srgb, var(--tape) 82%, transparent);
+  box-shadow: 0 2px 5px rgba(0,0,0,.15);
+  clip-path: polygon(3% 0, 97% 4%, 100% 30%, 96% 55%, 100% 80%, 97% 100%, 2% 96%, 0 70%, 4% 45%, 0 20%);
+}
+
+/* =========================================================
+   1. BOTANICAL ARCH — panel lengkung & pil, buket bunga di sudut, lanskap bukit
+   ========================================================= */
+.st-botanical body { background: linear-gradient(180deg, var(--sky-1), var(--sky-2) 55%, var(--bg)); }
+.st-botanical .main { background: transparent; box-shadow: none; }
+.st-botanical .deco.hills { left: 0; right: 0; bottom: 0; height: 26%; z-index: 1; }
+.st-botanical .deco.hills.fixed { position: fixed; height: 20vh; z-index: 0; opacity: .85; }
+.st-botanical .layout { position: relative; z-index: 1; }
+.st-botanical section.block { padding: 46px 18px; }
+.st-botanical section.block + section.block::before { display: none; }
+.st-botanical .block .panel {
+  background: color-mix(in srgb, var(--surface) 80%, transparent);
+  backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+  border: 1.5px solid var(--line);
+  padding: 92px 24px 104px;
+  opacity: 0; transform: translateY(46px) scale(.94); filter: blur(8px);
+  transition: opacity 1s var(--ease), transform 1.2s var(--ease), filter 1.2s var(--ease);
+}
+.st-botanical .block .panel::before { content: ""; position: absolute; inset: 9px; border: 1px solid var(--line); border-radius: inherit; pointer-events: none; }
+.st-botanical .block .panel.shape-a { border-radius: 50% 50% 28px 28px / 190px 190px 28px 28px; }
+.st-botanical .block .panel.shape-b { border-radius: 150px; padding-top: 84px; }
+.st-botanical .block.hero .panel { border-radius: 50% 50% 50% 50% / 210px 210px 210px 210px; min-height: 84vh; display: flex; align-items: center; justify-content: center; padding: 120px 24px; }
+.st-botanical .block.go .panel { opacity: 1; transform: none; filter: none; }
+.st-botanical .hero { min-height: 0; background: none; }
+.st-botanical .bq { width: 190px; height: 190px; }
+.st-botanical .bq.big { width: 270px; height: 270px; }
+.st-botanical .bq.small { width: 110px; height: 110px; }
+.st-botanical .bq-l { left: -26px; bottom: -34px; }
+.st-botanical .bq-r { right: -26px; bottom: -34px; transform: scaleX(-1); }
+.st-botanical .bq-tl { left: -24px; top: -28px; transform: scaleY(-1) rotate(10deg); width: 150px; height: 150px; }
+.st-botanical .bq-tr { right: -24px; top: -28px; transform: scale(-1, -1) rotate(10deg); width: 150px; height: 150px; }
+.st-botanical .cover .bq-l, .st-botanical .side .bq-l { left: -30px; bottom: -24px; }
+.st-botanical .cover .bq-r, .st-botanical .side .bq-r { right: -30px; bottom: -24px; }
+.st-botanical .block .panel { padding-bottom: 130px; }
+.st-botanical .frame-arch .frame-inner { border-width: 3px; }
+.st-botanical .avatar { border-radius: 999px 999px 26px 26px; width: 170px; height: 228px; outline-offset: 9px; }
+.st-botanical .gallery .tile { border-radius: 120px 120px 14px 14px; }
+.st-botanical .gallery .tile:nth-child(3n+1) { border-radius: 200px 200px 14px 14px / 120px 120px 14px 14px; }
+.st-botanical .card { background: color-mix(in srgb, var(--surface) 90%, transparent); border-radius: 200px 200px 22px 22px / 90px 90px 22px 22px; padding-top: 52px; }
+.st-botanical .ev-icon { margin-top: -78px; }
+.st-botanical .countdown > div { border-radius: 60px 60px 14px 14px; background: color-mix(in srgb, var(--surface) 70%, transparent); }
+/* sampul: buket membelah keluar */
+.st-botanical .cover { background: linear-gradient(180deg, var(--sky-1), var(--sky-2)); }
+.st-botanical .cover .cover-inner { padding-bottom: 120px; }
+.cover.eff-bloom { transition: opacity 1s ease .5s, transform 1.4s var(--ease) .4s; }
+.cover.eff-bloom .bq, .cover.eff-bloom .hills { transition: transform 1.3s var(--ease-io); }
+.cover.eff-bloom.opening .bq-l { transform: translate(-90%, 50%) rotate(-25deg); }
+.cover.eff-bloom.opening .bq-r { transform: translate(90%, 50%) scaleX(-1) rotate(-25deg); }
+.cover.eff-bloom.opening .bq-tl { transform: translate(-90%, -60%) scaleY(-1); }
+.cover.eff-bloom.opening .bq-tr { transform: translate(90%, -60%) scale(-1, -1); }
+.cover.eff-bloom.opening .hills { transform: translateY(100%); }
+.cover.eff-bloom.opened { opacity: 0; transform: scale(1.12); }
+.st-botanical .side { background: linear-gradient(180deg, var(--sky-1), var(--sky-2)); }
+.st-botanical .side .side-inner { position: relative; z-index: 2; }
+
+/* =========================================================
+   2. EDITORIAL — koran / majalah: kertas kusut, garis ganda, foto "dicetak"
+   ========================================================= */
+.st-editorial body { background-color: var(--bg); }
+.paper-grain {
+  position: fixed; inset: 0; z-index: 0; opacity: .55; mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='600'%3E%3Cfilter id='c'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.009' numOctaves='4' seed='3'/%3E%3CfeDiffuseLighting lighting-color='%23ffffff' surfaceScale='2.2'%3E%3CfeDistantLight azimuth='45' elevation='55'/%3E%3C/feDiffuseLighting%3E%3C/filter%3E%3Crect width='600' height='600' filter='url(%23c)'/%3E%3C/svg%3E");
+  background-size: 600px 600px;
+}
+.st-editorial .layout, .st-editorial .cover-inner { position: relative; z-index: 1; }
+.st-editorial .main { background: transparent; box-shadow: none; border-left: 1px solid var(--line); border-right: 1px solid var(--line); }
+.st-editorial section.block { padding: 38px 22px; text-align: center; }
+.st-editorial section.block + section.block::before { display: none; }
+.st-editorial .block .panel::before {
+  content: ""; display: block; height: 7px; margin: 0 0 26px;
+  border-top: 3px solid var(--ink); border-bottom: 1px solid var(--ink);
+  transform: scaleX(0); transform-origin: left; transition: transform 1.1s var(--ease);
+}
+.st-editorial .block.go .panel::before { transform: none; }
+.st-editorial .block h2 {
+  font-family: var(--font-head, var(--font-display)); font-size: clamp(1.9rem, 7vw, 2.4rem); margin: 0 0 6px;
+  clip-path: inset(0 100% 0 0); transition: clip-path 1.2s var(--ease) .25s, opacity .4s ease !important;
+}
+.st-editorial .block.go h2 { clip-path: inset(0 0 0 0); }
+.st-editorial .orn.small { display: none; }
+.st-editorial .eyebrow { letter-spacing: .32em; font-weight: 600; color: var(--ink); }
+.st-editorial .lead { font-size: 15.5px; color: var(--ink); text-align: justify; hyphens: auto; max-width: none !important; }
+.st-editorial #salam .lead::first-letter { float: left; font-family: var(--font-head, var(--font-display)); font-size: 3.6em; line-height: .78; padding: 6px 8px 0 0; color: var(--accent); }
+.masthead { display: flex; flex-direction: column; align-items: center; gap: 6px; width: 100%; margin-bottom: 8px; }
+.masthead .mh-title { font-family: var(--font-mast, var(--font-display)); font-size: clamp(2.2rem, 10vw, 3.4rem); line-height: 1; color: var(--ink); }
+.masthead .mh-line {
+  display: block; width: 100%; font-size: 11px; letter-spacing: .24em; text-transform: uppercase; padding: 6px 0;
+  border-top: 3px double var(--ink); border-bottom: 3px double var(--ink); color: var(--ink);
+}
+.st-editorial .title-script { font-family: var(--font-display); }
+.st-editorial .frame { width: 100%; max-width: 340px; height: auto; aspect-ratio: 4 / 5; }
+.st-editorial .frame.lg { max-width: 420px; }
+.st-editorial .frame.sm { max-width: 160px; }
+.st-editorial .cover .frame { max-width: 230px; }
+.st-editorial .cover .cover-inner { gap: 10px; }
+.st-editorial .frame::before { inset: -6px; border-radius: 0; border-color: var(--ink); opacity: 1; }
+.st-editorial .frame-inner { border-radius: 0; border: 1px solid var(--ink); box-shadow: none; }
+.st-editorial img, .st-editorial .ph, .st-editorial .avatar { filter: grayscale(1) contrast(1.08); }
+.st-editorial .ph { background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.28) 0 6%, transparent 6.5%), radial-gradient(circle at 70% 64%, rgba(255,255,255,.18) 0 9%, transparent 9.5%), radial-gradient(ellipse at 50% 120%, #2a2a2a, transparent 60%), linear-gradient(160deg, #9a9a9a, #4a4a4a) !important; }
+/* foto "dicetak": dari pucat & blur ke tajam */
+.st-editorial .reveal .avatar, .st-editorial .reveal .tile, .st-editorial .reveal .frame-inner { filter: grayscale(1) blur(9px) brightness(1.7); transition: filter 1.8s ease .3s; }
+.st-editorial .reveal.go .avatar, .st-editorial .reveal.go .tile, .st-editorial .reveal.go .frame-inner { filter: grayscale(1) contrast(1.08); }
+.st-editorial .hosts { display: grid; gap: 22px; }
+.st-editorial .host { display: grid; grid-template-columns: 44% 1fr; column-gap: 16px; align-items: center; text-align: left; max-width: none; width: 100%; }
+.st-editorial .host .avatar { grid-row: 1 / span 6; width: 100%; height: auto; aspect-ratio: 3 / 4; border-radius: 0; outline: none; border: 1px solid var(--ink); }
+.st-editorial .host:last-child { grid-template-columns: 1fr 44%; text-align: right; }
+.st-editorial .host:last-child .avatar { grid-column: 2; }
+.st-editorial .host .name { border-top: 3px double var(--ink); border-bottom: 1px solid var(--ink); padding: 6px 0; font-family: var(--font-display); }
+.st-editorial .amp { font-family: var(--font-head, var(--font-display)); font-size: 2.4rem; }
+.st-editorial .card, .st-editorial .quote, .st-editorial form.form, .st-editorial .wish { background: transparent; border-radius: 0; border: 1px solid var(--ink); box-shadow: none; }
+.st-editorial .ev-icon { border-radius: 0; box-shadow: 0 0 0 6px var(--bg); }
+.st-editorial .countdown { border-top: 1px solid var(--ink); border-bottom: 1px solid var(--ink); padding: 8px 0; gap: 0; }
+.st-editorial .countdown > div { background: none; border: 0; border-radius: 0; box-shadow: none; border-left: 1px solid var(--line); }
+.st-editorial .countdown > div:first-child { border-left: 0; }
+.st-editorial .btn { border-radius: 0; background: var(--ink); border-color: var(--ink); color: var(--bg); letter-spacing: .06em; }
+.st-editorial .btn.ghost { background: transparent; color: var(--ink); }
+.st-editorial .gallery .tile { border-radius: 0; border: 1px solid var(--ink); }
+.st-editorial .gallery { gap: 8px; }
+.st-editorial .timeline .item::before { border-radius: 0; background: var(--ink); }
+.st-editorial .dock, .st-editorial .fab { border-radius: 0; }
+.st-editorial .dock a { border-radius: 0; }
+.st-editorial .field input, .st-editorial .field select, .st-editorial .field textarea, .st-editorial .choices label { border-radius: 0; border-color: var(--ink); }
+/* sampul: halaman koran dibalik */
+.st-editorial .cover { background: var(--bg); }
+.cover.eff-paper { transform-origin: left center; transition: transform 1.3s var(--ease-io), opacity .5s ease .9s; box-shadow: 30px 0 60px rgba(0,0,0,.25); }
+.cover.eff-paper.opened { transform: perspective(1800px) rotateY(-100deg); opacity: 0; }
+.cover .fold { position: absolute; top: 0; bottom: 0; left: 50%; width: 1px; background: linear-gradient(transparent, rgba(0,0,0,.12) 20%, rgba(0,0,0,.12) 80%, transparent); box-shadow: 0 0 18px 6px rgba(0,0,0,.05); z-index: 1; }
+.st-editorial .side { background: transparent; border-right: 1px solid var(--line); }
+/* varian majalah (warna, judul besar) */
+.var-magazine img, .var-magazine .avatar, .var-magazine .reveal.go .avatar, .var-magazine .reveal.go .tile, .var-magazine .reveal.go .frame-inner { filter: none !important; }
+.var-magazine .ph { background: radial-gradient(circle at 26% 30%, rgba(255,255,255,.5) 0 6%, transparent 6.5%), radial-gradient(circle at 70% 64%, rgba(255,255,255,.3) 0 10%, transparent 10.5%), linear-gradient(160deg, var(--accent), var(--accent-2)) !important; }
+.var-magazine .masthead .mh-title { font-size: clamp(3rem, 16vw, 5rem); letter-spacing: -.03em; color: var(--accent); text-transform: uppercase; font-weight: 800; }
+.var-magazine .masthead .mh-line { border-color: var(--accent); }
+
+/* =========================================================
+   3. KOLASE AMPLOP — beludru, kartu kertas miring, selotip, polaroid, segel lilin, renda
+   ========================================================= */
+.st-collage body {
+  background:
+    radial-gradient(ellipse 70% 50% at 20% 10%, color-mix(in srgb, var(--velvet) 70%, #fff 8%), transparent 70%),
+    radial-gradient(ellipse 60% 50% at 85% 55%, color-mix(in srgb, var(--velvet) 75%, #fff 10%), transparent 70%),
+    radial-gradient(ellipse 80% 40% at 30% 90%, color-mix(in srgb, var(--velvet) 80%, #000 20%), transparent 70%),
+    var(--velvet);
+}
+.velvet-grain {
+  position: fixed; inset: 0; z-index: 0; opacity: .5; mix-blend-mode: soft-light;
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='v'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.012 .04' numOctaves='3' seed='8'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23v)' opacity='.9'/%3E%3C/svg%3E");
+}
+.st-collage .layout { position: relative; z-index: 1; }
+.st-collage .main { background: transparent; box-shadow: none; }
+.st-collage section.block { padding: 44px 22px; }
+.st-collage section.block + section.block::before { display: none; }
+.st-collage .block .panel {
+  background: var(--surface);
+  background-image: linear-gradient(135deg, rgba(255,255,255,.5), transparent 40%), linear-gradient(0deg, rgba(0,0,0,.025), rgba(0,0,0,.025));
+  border-radius: 3px; padding: 52px 22px 46px;
+  box-shadow: 0 22px 44px rgba(0,0,0,.35), 0 2px 0 rgba(0,0,0,.05);
+  opacity: 0; transform: translateY(90px) rotate(-12deg) scale(.9);
+  transition: opacity .8s ease, transform 1.1s cubic-bezier(.2, 1.35, .4, 1);
+}
+.st-collage .block.go .panel.tilt-l { opacity: 1; transform: rotate(-1.6deg); }
+.st-collage .block.go .panel.tilt-r { opacity: 1; transform: rotate(1.3deg); }
+.st-collage .block.go .panel.hero-panel { opacity: 1; transform: none; }
+.st-collage .block .tape { transform: translateX(-50%) rotate(var(--r)) scale(0); transition: transform .5s cubic-bezier(.2, 1.5, .4, 1) .7s; }
+.st-collage .block.go .tape { transform: translateX(-50%) rotate(var(--r)) scale(1); }
+.st-collage .seal-deco { width: 82px; height: 82px; top: -28px; right: -16px; transform: scale(2.6) rotate(-40deg); opacity: 0; transition: transform .55s cubic-bezier(.3, 1.6, .5, 1) 1s, opacity .2s ease 1s; filter: drop-shadow(0 6px 8px rgba(0,0,0,.35)); }
+.st-collage .go .seal-deco { transform: rotate(-12deg); opacity: 1; }
+.st-collage .pearls {
+  left: -24px; bottom: -10px; width: 0; height: 22px; transform: rotate(-12deg); transform-origin: left center;
+  background: radial-gradient(circle at 34% 32%, #fff 0 18%, #EFE8DD 40%, #C3B6A3 68%, transparent 71%) 0 0 / 22px 22px repeat-x;
+  filter: drop-shadow(0 3px 3px rgba(0,0,0,.35)); transition: width 1.6s steps(9) .6s;
+}
+.st-collage .go .pearls { width: 198px; }
+.st-collage .bq { width: 120px; height: 120px; right: -34px; bottom: -36px; transform: scaleX(-1); }
+.st-collage .bq.big { width: 220px; height: 220px; }
+/* hero = renda/doily bergerigi */
+.st-collage .hero { min-height: 0; background: none; padding-top: 60px; }
+.st-collage .block.hero .panel { background: none; box-shadow: none; padding: 64px 34px; }
+.st-collage .block.hero .panel::before {
+  content: ""; position: absolute; inset: 0; z-index: -1; background: var(--lace);
+  --s: 14px;
+  -webkit-mask: conic-gradient(at var(--s) var(--s), #000 75%, #0000 0) 0 0 / calc(100% - var(--s)) calc(100% - var(--s)), radial-gradient(farthest-side, #000 97%, #0000) 0 0 / calc(2 * var(--s)) calc(2 * var(--s)) round;
+          mask: conic-gradient(at var(--s) var(--s), #000 75%, #0000 0) 0 0 / calc(100% - var(--s)) calc(100% - var(--s)), radial-gradient(farthest-side, #000 97%, #0000) 0 0 / calc(2 * var(--s)) calc(2 * var(--s)) round;
+  filter: drop-shadow(0 18px 30px rgba(0,0,0,.35));
+}
+.st-collage .block.hero .panel::after { content: ""; position: absolute; inset: 22px; border: 2px dotted color-mix(in srgb, var(--accent) 40%, transparent); pointer-events: none; z-index: 0; }
+.st-collage .block.hero .panel-in { position: relative; z-index: 1; }
+/* polaroid & foto */
+.frame-polaroid { width: 200px; height: auto; padding: 12px 12px 46px; background: #fff; box-shadow: 0 16px 32px rgba(0,0,0,.35); transform: rotate(-4deg); }
+.frame-polaroid::before { display: none; }
+.frame-polaroid .frame-inner { position: relative; inset: auto; aspect-ratio: 1 / 1.1; border-radius: 0; border: 0; box-shadow: none; }
+.frame-polaroid .caption { position: absolute; left: 0; right: 0; bottom: 10px; font-family: var(--font-script); font-size: 22px; color: #333; text-align: center; }
+.frame-polaroid.lg { width: 280px; }
+.frame-polaroid.sm { width: 130px; padding-bottom: 30px; }
+.frame-polaroid.sm .caption { font-size: 15px; bottom: 6px; }
+.frame-polaroid .tape { top: -14px; width: 90px; }
+.st-collage .avatar { border-radius: 2px; width: 172px; height: 210px; border: 10px solid #fff; border-bottom-width: 38px; outline: none; box-shadow: 0 12px 26px rgba(0,0,0,.28); transform: rotate(-3deg); }
+.st-collage .host:last-child .avatar { transform: rotate(3deg); }
+.st-collage .gallery { gap: 14px 10px; padding: 6px; }
+.st-collage .gallery .tile { border-radius: 2px; border: 8px solid #fff; border-bottom-width: 26px; box-shadow: 0 10px 20px rgba(0,0,0,.25); transform: rotate(-2.5deg); }
+.st-collage .gallery .tile:nth-child(2n) { transform: rotate(2deg) translateY(8px); }
+.st-collage .gallery .tile:nth-child(3n) { transform: rotate(-1deg); }
+.st-collage .gallery .tile:hover { transform: rotate(0) scale(1.03); z-index: 2; }
+.st-collage .card { border-radius: 3px; background: color-mix(in srgb, var(--env) 60%, var(--surface)); border-style: dashed; }
+.st-collage .gift { background: var(--env); }
+/* sampul amplop + segel */
+.st-collage .cover {
+  background:
+    linear-gradient(to top right, transparent 49.7%, rgba(0,0,0,.07) 50%, transparent 50.3%) left bottom / 50.2% 58% no-repeat,
+    linear-gradient(to top left, transparent 49.7%, rgba(0,0,0,.07) 50%, transparent 50.3%) right bottom / 50.2% 58% no-repeat,
+    var(--env);
+}
+.st-collage .cover .cover-inner { justify-content: flex-start; padding-top: calc(40vh + 64px); color: var(--ink); }
+.st-collage .cover .frame, .st-collage .cover .orn.top { display: none; }
+.cover.eff-seal .flap {
+  position: absolute; left: 0; right: 0; top: 0; height: 40vh; z-index: 3;
+  background: linear-gradient(180deg, color-mix(in srgb, var(--env) 88%, #000), var(--env));
+  clip-path: polygon(0 0, 100% 0, 50% 100%); transform-origin: top center;
+  transition: transform .9s var(--ease-io) .45s; filter: drop-shadow(0 8px 12px rgba(0,0,0,.15));
+}
+.cover.eff-seal { transition: transform 1.1s var(--ease-io) 1s, opacity .8s ease 1.2s; }
+.env-seal { width: 92px; height: 92px; left: 50%; top: calc(40vh - 52px); margin-left: -46px; z-index: 4; filter: drop-shadow(0 6px 10px rgba(0,0,0,.35)); transition: transform .5s ease, opacity .5s ease .2s; }
+.cover.go .env-seal { animation: sealIn .8s cubic-bezier(.3, 1.6, .5, 1) .4s both; }
+@keyframes sealIn { from { transform: scale(2.4) rotate(-40deg); opacity: 0; } to { transform: none; opacity: 1; } }
+.cover.eff-seal.opening .env-seal { animation: crack .55s ease forwards; }
+@keyframes crack { 0% { transform: scale(1); } 30% { transform: scale(1.15) rotate(8deg); } 100% { transform: scale(.4) rotate(-30deg) translateY(-30px); opacity: 0; } }
+.cover.eff-seal.opening .flap { transform: perspective(900px) rotateX(180deg); }
+.cover.eff-seal.opened { transform: translateY(105%); opacity: .2; }
+.st-collage .side { background: transparent; border-right: 0; }
+.st-collage .side .side-inner { background: var(--surface); padding: 46px 40px; box-shadow: 0 26px 50px rgba(0,0,0,.4); transform: rotate(-2deg); position: relative; z-index: 2; }
+.st-collage .side .pearls { left: 8%; top: 12%; width: 260px; transform: rotate(-20deg); z-index: 3; }
+.st-collage .side .seal-deco { top: auto; bottom: 14%; right: 18%; opacity: 1; transform: rotate(-12deg); width: 110px; height: 110px; z-index: 3; }
+.st-collage .side .bq { right: 6%; bottom: 6%; z-index: 3; }
+/* varian scrapbook anak */
+.var-scrapbook body { background: radial-gradient(color-mix(in srgb, var(--accent) 18%, transparent) 1.4px, transparent 1.8px) 0 0 / 22px 22px, var(--velvet); }
+.var-scrapbook .velvet-grain { display: none; }
+
+/* =========================================================
+   4. ROYAL ORNAMEN — tirai panggung, pilar, bingkai ukir bersudut, kamea oval, kilau emas
+   ========================================================= */
+.st-royal body {
+  background-color: var(--bg);
+  background-image:
+    radial-gradient(circle at 50% 50%, color-mix(in srgb, var(--gold) 16%, transparent) 1.6px, transparent 2px),
+    radial-gradient(ellipse 12px 20px at 50% 50%, transparent 62%, color-mix(in srgb, var(--gold) 10%, transparent) 64%, transparent 72%);
+  background-size: 34px 34px, 34px 34px;
+}
+.st-royal .main { background: transparent; box-shadow: none; }
+.st-royal section.block { padding: 40px 18px; }
+.st-royal section.block + section.block::before { display: none; }
+.st-royal .block .panel {
+  background: color-mix(in srgb, var(--surface) 92%, transparent);
+  border: 1.5px solid var(--gold); outline: 1px solid color-mix(in srgb, var(--gold) 55%, transparent); outline-offset: -11px;
+  padding: 78px 30px 72px;
+  opacity: 0; transform: scale(.9); transition: opacity 1s ease, transform 1.2s var(--ease);
+}
+.st-royal .block .panel.shape-b { border-radius: 170px 170px 0 0; padding-top: 96px; }
+.st-royal .block .panel.shape-b .cn-tl, .st-royal .block .panel.shape-b .cn-tr { display: none; }
+.st-royal .block.go .panel { opacity: 1; transform: none; }
+.st-royal .block .panel::after {
+  content: ""; position: absolute; left: 18px; right: 18px; bottom: 18px; height: 12px; opacity: .75;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='12'%3E%3Cpath d='M0 6 L6 0 L12 6 L6 12Z M12 6 L18 0 L24 6 L18 12Z' fill='none' stroke='%23C9A45C' stroke-width='1'/%3E%3Ccircle cx='12' cy='6' r='1.6' fill='%23C9A45C'/%3E%3C/svg%3E") center / 24px 12px repeat-x;
+}
+.st-royal .cn { width: 92px; height: 92px; }
+.st-royal .cn svg { stroke-width: 2.2 !important; }
+.st-royal .cn-tl { left: -2px; top: -2px; }
+.st-royal .cn-tr { right: -2px; top: -2px; transform: scaleX(-1); }
+.st-royal .cn-bl { left: -2px; bottom: -2px; transform: scaleY(-1); }
+.st-royal .cn-br { right: -2px; bottom: -2px; transform: scale(-1, -1); }
+.st-royal .cn [pathLength], .st-royal .crest [pathLength] { stroke-dasharray: 1; stroke-dashoffset: 1; }
+.st-royal .cn svg [style*="fill:var(--gold)"], .st-royal .crest svg [style*="fill:var(--gold)"] { opacity: 0; }
+.st-royal .go .cn [pathLength], .cover.go .cn [pathLength], .go .crest [pathLength], .cover.go .crest [pathLength], .side.go .crest [pathLength] { animation: draw 2s var(--ease) .5s forwards; }
+.st-royal .go .cn svg [style*="fill:var(--gold)"], .cover.go .cn svg [style*="fill:var(--gold)"], .go .crest svg [style*="fill:var(--gold)"], .cover.go .crest svg [style*="fill:var(--gold)"], .side.go .crest svg [style*="fill:var(--gold)"] { animation: fadeIn .6s ease 1.8s forwards; }
+.st-royal .block h2, .st-royal .title-script, .st-royal .script-sm {
+  background: linear-gradient(100deg, var(--gold-text, var(--accent)) 30%, color-mix(in srgb, var(--gold-text, var(--accent)) 30%, #fff) 50%, var(--gold-text, var(--accent)) 70%) 0 0 / 260% 100%;
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+  animation: goldsheen 5s linear infinite;
+}
+.st-royal .title-script.letters, .st-royal .script-sm.letters { background: none; animation: none; color: var(--gold-text, var(--accent)); text-shadow: 0 0 18px color-mix(in srgb, var(--gold) 35%, transparent); }
+@keyframes goldsheen { from { background-position: 130% 0; } to { background-position: -130% 0; } }
+.frame-oval { width: 170px; height: 226px; margin-top: 40px; }
+.frame-oval.lg { width: 240px; height: 320px; }
+.frame-oval.sm { width: 120px; height: 160px; margin-top: 30px; }
+.frame-oval .frame-inner, .frame-oval::before { border-radius: 50%; }
+.frame-oval .frame-inner { border: 3px solid var(--gold); }
+.frame-oval::before { border: 1.5px solid var(--gold); inset: -10px; opacity: .8; }
+.frame-oval .crest { position: absolute; left: 50%; top: -42px; width: 150px; height: 46px; margin-left: -75px; }
+.frame-oval.lg .crest { width: 190px; margin-left: -95px; top: -50px; height: 58px; }
+.st-royal .avatar { border-radius: 50%; width: 160px; height: 210px; border: 3px solid var(--gold); outline: 1.5px solid var(--gold); outline-offset: 8px; }
+.st-royal .avatar.no-photo { width: 96px; height: 96px; }
+.st-royal .gallery .tile { border-radius: 0; border: 2px solid var(--gold); outline: 1px solid color-mix(in srgb, var(--gold) 50%, transparent); outline-offset: -8px; }
+.st-royal .gallery .tile:nth-child(3n+1) { border-radius: 50% / 40%; }
+.st-royal .card { border-color: var(--gold); border-radius: 0; background: color-mix(in srgb, var(--surface) 80%, transparent); }
+.st-royal .countdown > div { border-radius: 0; border-color: var(--gold); background: transparent; }
+.st-royal .btn { border-radius: 2px; letter-spacing: .08em; }
+/* tirai (valance) & pilar */
+.valance {
+  left: 0; right: 0; top: 0; height: 74px; z-index: 6;
+  background:
+    radial-gradient(ellipse 50% 100% at 50% 0, var(--drape) 70%, color-mix(in srgb, var(--drape) 70%, #000) 71%, transparent 74%) 0 0 / 110px 74px repeat-x;
+  filter: drop-shadow(0 6px 8px rgba(0,0,0,.35));
+}
+.valance::after {
+  content: ""; position: absolute; left: 0; right: 0; top: 0; height: 18px;
+  background: linear-gradient(var(--drape), color-mix(in srgb, var(--drape) 80%, #000)); border-bottom: 3px solid var(--gold);
+}
+.valance::before {
+  content: ""; position: absolute; left: 0; right: 0; top: 56px; height: 18px;
+  background: radial-gradient(circle at 50% 30%, var(--gold) 0 3px, transparent 3.5px) 55px 0 / 110px 18px repeat-x;
+}
+.pillar {
+  top: 0; bottom: 0; width: 22px; z-index: 5;
+  background:
+    repeating-linear-gradient(90deg, rgba(0,0,0,.18) 0 2px, transparent 2px 6px),
+    linear-gradient(90deg, color-mix(in srgb, var(--gold) 55%, #000), var(--gold) 30%, color-mix(in srgb, var(--gold) 40%, #fff) 50%, var(--gold) 70%, color-mix(in srgb, var(--gold) 55%, #000));
+  box-shadow: 0 0 18px rgba(0,0,0,.3);
+}
+.pillar.pl { left: 0; } .pillar.pr { right: 0; }
+@media (min-width: 700px) { .pillar { width: 34px; } }
+.st-royal .cover .cn { width: 92px; height: 92px; }
+.st-royal .cover .cn-tl, .st-royal .cover .cn-tr { top: 82px; }
+.st-royal .cover .cn-tl, .st-royal .cover .cn-bl { left: 30px; }
+.st-royal .cover .cn-tr, .st-royal .cover .cn-br { right: 30px; }
+.st-royal .cover .cn-bl, .st-royal .cover .cn-br { bottom: 14px; }
+.st-royal .cover .cover-inner { padding-top: 90px; }
+/* sampul: tirai terkumpul ke samping */
+.cover.eff-drape { background: transparent; }
+.cover.eff-drape .cpanel {
+  display: block; z-index: 1;
+  background:
+    linear-gradient(90deg, rgba(0,0,0,.25), transparent 15%, transparent 85%, rgba(0,0,0,.25)),
+    repeating-linear-gradient(90deg, var(--drape) 0 16px, color-mix(in srgb, var(--drape) 65%, #000) 22px, var(--drape) 28px, color-mix(in srgb, var(--drape) 85%, #fff) 36px, var(--drape) 44px);
+  transition: transform 1.6s var(--ease-io), opacity .6s ease 1.3s;
+}
+.cover.eff-drape .cpanel.l { transform-origin: left center; }
+.cover.eff-drape .cpanel.r { transform-origin: right center; }
+.cover.eff-drape.opened .cpanel.l { transform: scaleX(.12) skewY(3deg); opacity: 0; }
+.cover.eff-drape.opened .cpanel.r { transform: scaleX(.12) skewY(-3deg); opacity: 0; }
+.cover.eff-drape .cover-inner { background: radial-gradient(ellipse 70% 60% at 50% 50%, color-mix(in srgb, var(--bg) 92%, transparent), transparent 80%); }
+.cover.eff-drape.opened .valance, .cover.eff-drape.opened .pillar, .cover.eff-drape.opened .cn { opacity: 0; transition: opacity .8s ease .9s; }
+.st-royal .side { background: transparent; }
+.st-royal .side .side-inner { position: relative; z-index: 2; padding-top: 70px; }
+
+/* =========================================================
+   5. WATERCOLOR — sapuan cat air, tepi kertas sobek, ranting sakura, kupu-kupu
+   ========================================================= */
+.st-watercolor body { background: var(--bg); }
+.st-watercolor .main { background: transparent; box-shadow: none; }
+.st-watercolor section.block { padding: 34px 0; }
+.st-watercolor section.block + section.block::before { display: none; }
+.st-watercolor .block .panel {
+  background: var(--surface); padding: 64px 28px 60px; isolation: isolate;
+  opacity: 0; transition: opacity 1.2s ease;
+}
+.st-watercolor .block.go .panel { opacity: 1; }
+.st-watercolor .block .panel::before, .st-watercolor .block .panel::after {
+  content: ""; position: absolute; left: 0; right: 0; height: 20px; background: var(--surface); z-index: 1;
+}
+.st-watercolor .block .panel::before { top: -19px; clip-path: polygon(0 100%, 0 55%, 4% 40%, 9% 62%, 14% 30%, 19% 52%, 25% 22%, 31% 58%, 37% 35%, 43% 60%, 49% 18%, 55% 50%, 61% 32%, 67% 64%, 73% 26%, 79% 55%, 85% 34%, 91% 60%, 96% 38%, 100% 50%, 100% 100%); }
+.st-watercolor .block .panel::after { bottom: -19px; clip-path: polygon(0 0, 0 45%, 5% 62%, 10% 38%, 16% 70%, 22% 44%, 28% 76%, 34% 40%, 40% 66%, 46% 30%, 52% 72%, 58% 48%, 64% 78%, 70% 36%, 76% 66%, 82% 42%, 88% 70%, 94% 46%, 100% 60%, 100% 0); }
+.st-watercolor .panel-in { position: relative; z-index: 2; }
+.wash {
+  width: 240px; height: 210px; z-index: 0;
+  border-radius: 44% 56% 62% 38% / 45% 40% 60% 55%;
+  background: radial-gradient(circle at 42% 40%, color-mix(in srgb, var(--fl-1) 70%, transparent), color-mix(in srgb, var(--fl-2) 25%, transparent) 55%, transparent 72%);
+  filter: blur(12px); opacity: 0; transform: scale(.25) rotate(-20deg);
+  transition: opacity 1.8s ease .2s, transform 2.4s var(--ease) .2s;
+}
+.wash.w-a { left: -60px; top: -30px; }
+.wash.w-b { right: -70px; bottom: -40px; background: radial-gradient(circle at 50% 50%, color-mix(in srgb, var(--fl-3) 90%, transparent), color-mix(in srgb, var(--fl-1) 30%, transparent) 55%, transparent 72%); }
+.wash.w-c { left: 30%; top: 40%; background: radial-gradient(circle at 50% 50%, color-mix(in srgb, var(--fl-2) 45%, transparent), transparent 70%); }
+.wash.big { width: 420px; height: 380px; }
+.go .wash, .cover.go .wash, .side.go .wash { opacity: .85; transform: scale(1) rotate(8deg); animation: morph 14s ease-in-out 2.6s infinite alternate; }
+@keyframes morph { 0% { border-radius: 44% 56% 62% 38% / 45% 40% 60% 55%; } 50% { border-radius: 58% 42% 40% 60% / 55% 60% 40% 45%; } 100% { border-radius: 40% 60% 54% 46% / 62% 44% 56% 38%; } }
+.branch { width: 190px; height: 120px; z-index: 3; }
+.branch.br-tl { left: -16px; top: -46px; }
+.branch.br-tr { right: -16px; top: -46px; transform: scaleX(-1); }
+.st-watercolor .block .panel { padding-top: 96px; }
+.branch.br-br { right: -16px; bottom: -10px; transform: scale(-1, -1); }
+.branch .br-line { stroke-dasharray: 1; stroke-dashoffset: 1; }
+.go .branch .br-line, .cover.go .branch .br-line, .side.go .branch .br-line { animation: draw 1.6s var(--ease) .2s forwards; }
+.bfly { width: 40px; height: 32px; right: 22px; top: 70%; z-index: 4; animation: flutter 9s ease-in-out infinite; }
+.bfly.b1 { left: 18%; right: auto; top: 22%; }
+.bfly.b2 { right: 16%; top: 64%; animation-delay: -4s; }
+.bfly .wing { transform-box: fill-box; animation: flap .28s ease-in-out infinite alternate; }
+.bfly .wl { transform-origin: right center; } .bfly .wr { transform-origin: left center; }
+@keyframes flap { from { transform: scaleX(1); } to { transform: scaleX(.25); } }
+@keyframes flutter { 0%, 100% { transform: translate(0, 0) rotate(-8deg); } 25% { transform: translate(-40px, -24px) rotate(6deg); } 50% { transform: translate(-10px, -50px) rotate(-4deg); } 75% { transform: translate(24px, -20px) rotate(10deg); } }
+.st-watercolor .avatar { border-radius: 42% 58% 55% 45% / 50% 45% 55% 50%; outline: none; border: 0; width: 180px; height: 200px; box-shadow: 0 0 0 10px color-mix(in srgb, var(--fl-3) 60%, transparent); animation: morph 12s ease-in-out infinite alternate; }
+.st-watercolor .frame-circle .ring { border: 0; inset: -22px; background: radial-gradient(circle, transparent 58%, color-mix(in srgb, var(--fl-1) 45%, transparent) 62%, transparent 74%); filter: blur(4px); animation: spin 30s linear infinite; }
+.st-watercolor .frame-circle .frame-inner { animation: morph 12s ease-in-out infinite alternate; }
+.st-watercolor .gallery .tile { border: 0; border-radius: 46% 54% 44% 56% / 52% 46% 54% 48%; }
+.st-watercolor .gallery .tile:nth-child(2n) { border-radius: 58% 42% 52% 48% / 44% 56% 44% 56%; }
+.st-watercolor .card { border: 0; background: color-mix(in srgb, var(--fl-3) 35%, var(--surface)); border-radius: 30px 8px 30px 8px; box-shadow: none; }
+.st-watercolor .countdown > div { border: 0; border-radius: 50%; aspect-ratio: 1; display: flex; flex-direction: column; justify-content: center; background: color-mix(in srgb, var(--fl-3) 55%, var(--surface)); box-shadow: none; }
+.st-watercolor .hero { background: none; }
+.st-watercolor .block.hero .panel { min-height: 88vh; display: flex; align-items: center; justify-content: center; }
+/* sampul: cat air meluber membuka */
+@property --wr { syntax: '<percentage>'; inherits: false; initial-value: 0%; }
+.cover.eff-wash {
+  -webkit-mask: radial-gradient(circle at 50% 55%, transparent var(--wr), #000 calc(var(--wr) + 14%));
+          mask: radial-gradient(circle at 50% 55%, transparent var(--wr), #000 calc(var(--wr) + 14%));
+  transition: --wr 1.7s cubic-bezier(.5, 0, .3, 1) .2s, opacity .5s ease 1.6s;
+}
+.cover.eff-wash.opened { --wr: 160%; opacity: 0; }
+.st-watercolor .cover { background: var(--bg); }
+.st-watercolor .side { background: var(--bg); }
+.st-watercolor .side .side-inner { position: relative; z-index: 2; }
+
+/* ---------- Ramah gerak berkurang ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .fl, .lf { transform: none !important; }
+  .block .panel, .st-collage .block .panel, .st-botanical .block .panel, .st-royal .block .panel, .st-watercolor .block .panel { opacity: 1 !important; transform: none !important; filter: none !important; }
+  .wash { opacity: .85 !important; transform: none !important; }
+  .branch .br-line, .st-royal .cn [pathLength], .st-royal .crest [pathLength] { stroke-dashoffset: 0 !important; }
+  .st-royal .cn svg [style*="fill:var(--gold)"], .st-royal .crest svg [style*="fill:var(--gold)"] { opacity: 1 !important; }
+  .st-collage .seal-deco, .st-collage .block .tape { opacity: 1 !important; transform: rotate(-10deg) !important; }
+  .st-collage .pearls { width: 198px !important; }
+  .st-editorial .block h2 { clip-path: none !important; }
+}

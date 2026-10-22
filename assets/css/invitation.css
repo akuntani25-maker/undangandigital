@@ -26,7 +26,7 @@ html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
 body {
   margin: 0; background: var(--bg); color: var(--ink);
   font-family: var(--font-body); font-size: 16px; line-height: 1.65;
-  overflow-x: hidden;
+  overflow-x: clip;
 }
 body.locked { overflow: hidden; height: 100vh; }
 img { max-width: 100%; display: block; }
@@ -36,16 +36,16 @@ button, input, select, textarea { font: inherit; color: inherit; }
 .ic svg { width: 18px; height: 18px; }
 
 /* ---------- Pola latar (opsional, theme.pattern) ---------- */
-.pat-dots body, .pat-dots .cover .panel, .pat-dots .main {
+.pat-dots body, .pat-dots .cover .cpanel, .pat-dots .main {
   background-image: radial-gradient(color-mix(in srgb, var(--accent) 14%, transparent) 1px, transparent 1.4px);
   background-size: 22px 22px;
 }
-.pat-grid body, .pat-grid .cover .panel, .pat-grid .main {
+.pat-grid body, .pat-grid .cover .cpanel, .pat-grid .main {
   background-image: linear-gradient(color-mix(in srgb, var(--accent) 8%, transparent) 1px, transparent 1px),
                     linear-gradient(90deg, color-mix(in srgb, var(--accent) 8%, transparent) 1px, transparent 1px);
   background-size: 32px 32px;
 }
-.pat-diamond body, .pat-diamond .cover .panel, .pat-diamond .main {
+.pat-diamond body, .pat-diamond .cover .cpanel, .pat-diamond .main {
   background-image: linear-gradient(45deg, color-mix(in srgb, var(--accent) 7%, transparent) 25%, transparent 25%, transparent 75%, color-mix(in srgb, var(--accent) 7%, transparent) 75%),
                     linear-gradient(45deg, color-mix(in srgb, var(--accent) 7%, transparent) 25%, transparent 25%, transparent 75%, color-mix(in srgb, var(--accent) 7%, transparent) 75%);
   background-size: 28px 28px; background-position: 0 0, 14px 14px;
@@ -116,11 +116,11 @@ button, input, select, textarea { font: inherit; color: inherit; }
   background: radial-gradient(120% 80% at 50% 0%, var(--bg-2), var(--bg) 70%);
   overflow: hidden;
 }
-.cover .panel { position: absolute; top: 0; bottom: 0; width: 50.5%; background: var(--bg); display: none; z-index: 0; }
-.cover .panel.l { left: 0; } .cover .panel.r { right: 0; }
+.cover .cpanel { position: absolute; top: 0; bottom: 0; width: 50.5%; background: var(--bg); display: none; z-index: 0; }
+.cover .cpanel.l { left: 0; } .cover .cpanel.r { right: 0; }
 .cover-inner {
   position: relative; z-index: 2; height: 100%; overflow-y: auto;
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; justify-content: safe center;
   text-align: center; padding: 36px 24px; gap: 12px;
   transition: opacity .45s ease, transform .6s var(--ease);
 }
@@ -135,23 +135,23 @@ button, input, select, textarea { font: inherit; color: inherit; }
 .cover.eff-zoom.opened { transform: scale(1.35); opacity: 0; filter: blur(8px); }
 /* 3. Tirai terbuka ke samping */
 .cover.eff-curtain, .cover.eff-gate { background: transparent; }
-.cover.eff-curtain .panel, .cover.eff-gate .panel { display: block; }
-.cover.eff-curtain .panel { transition: transform 1.3s var(--ease-io); box-shadow: 0 0 40px rgba(0,0,0,.15); }
-.cover.eff-curtain.opened .panel.l { transform: translateX(-102%); }
-.cover.eff-curtain.opened .panel.r { transform: translateX(102%); }
-.cover.eff-curtain .panel.l::after, .cover.eff-curtain .panel.r::after {
+.cover.eff-curtain .cpanel, .cover.eff-gate .cpanel { display: block; }
+.cover.eff-curtain .cpanel { transition: transform 1.3s var(--ease-io); box-shadow: 0 0 40px rgba(0,0,0,.15); }
+.cover.eff-curtain.opened .cpanel.l { transform: translateX(-102%); }
+.cover.eff-curtain.opened .cpanel.r { transform: translateX(102%); }
+.cover.eff-curtain .cpanel.l::after, .cover.eff-curtain .cpanel.r::after {
   content: ""; position: absolute; top: 0; bottom: 0; width: 18px;
   background: repeating-linear-gradient(90deg, transparent 0 6px, color-mix(in srgb, var(--accent) 12%, transparent) 6px 8px);
 }
-.cover.eff-curtain .panel.l::after { right: 0; } .cover.eff-curtain .panel.r::after { left: 0; }
+.cover.eff-curtain .cpanel.l::after { right: 0; } .cover.eff-curtain .cpanel.r::after { left: 0; }
 /* 4. Pintu gerbang 3D */
 .cover.eff-gate { perspective: 1400px; }
-.cover.eff-gate .panel { transition: transform 1.5s var(--ease-io), opacity 1.5s ease .3s; border: 1px solid var(--line); }
-.cover.eff-gate .panel.l { transform-origin: left center; }
-.cover.eff-gate .panel.r { transform-origin: right center; }
-.cover.eff-gate.opened .panel.l { transform: rotateY(100deg); opacity: 0; }
-.cover.eff-gate.opened .panel.r { transform: rotateY(-100deg); opacity: 0; }
-.cover.eff-gate .panel::before {
+.cover.eff-gate .cpanel { transition: transform 1.5s var(--ease-io), opacity 1.5s ease .3s; border: 1px solid var(--line); }
+.cover.eff-gate .cpanel.l { transform-origin: left center; }
+.cover.eff-gate .cpanel.r { transform-origin: right center; }
+.cover.eff-gate.opened .cpanel.l { transform: rotateY(100deg); opacity: 0; }
+.cover.eff-gate.opened .cpanel.r { transform: rotateY(-100deg); opacity: 0; }
+.cover.eff-gate .cpanel::before {
   content: ""; position: absolute; inset: 14px; border: 1px solid var(--line); border-radius: 999px 999px 0 0;
 }
 /* 5. Amplop: tutup membuka lalu turun */
@@ -245,7 +245,7 @@ button, input, select, textarea { font: inherit; color: inherit; }
 .layout { min-height: 100vh; }
 .side { display: none; }
 .main { max-width: 560px; margin: 0 auto; background-color: var(--bg); position: relative; overflow-x: hidden; overflow-x: clip; }
-html { overflow-x: hidden; }
+html { overflow-x: clip; }
 .main:focus { outline: none; }
 
 @media (min-width: 960px) {

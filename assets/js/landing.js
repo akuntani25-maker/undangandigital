@@ -28,7 +28,7 @@
         el('span', { class: 'dt', text: t.date })
       );
       for (var i = 0; i < 3; i++) { var s = el('span', { class: 'spark' }); s.innerHTML = SPARK; prev.appendChild(s); }
-      var fx = el('div', { class: 'fx' }, el('span', { text: 'Buka: ' + t.fx }), t.px && t.px !== '—' ? el('span', { text: t.px }) : null);
+      var fx = el('div', { class: 'fx' }, el('span', { text: 'Gaya ' + t.px }), el('span', { text: 'Buka: ' + t.fx }));
       var card = el('article', { class: 'tcard rv', 'data-cat': t.cat },
         prev,
         el('div', { class: 'tbody' },

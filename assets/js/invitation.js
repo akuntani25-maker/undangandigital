@@ -146,15 +146,27 @@
   }
 
   /* Bingkai lengkung/lingkaran berisi foto atau monogram */
-  function frame(src, alt, size) {
-    var shape = T.frame || 'arch';
+  /* Bentuk: arch, circle, oval (dengan mahkota), polaroid, lace (renda), rect (editorial), none */
+  function frame(src, alt, size, shapeOverride) {
+    var shape = shapeOverride || T.frame || 'arch';
     if (shape === 'none') return null;
+    var DC = window.DECOR;
     return h('div', { class: 'frame frame-' + shape + (size ? ' ' + size : '') },
-      h('div', { class: 'frame-inner' },
+      shape === 'oval' && DC ? h('div', { class: 'crest', 'aria-hidden': 'true', svg: DC.crest() }) : null,
+      shape === 'polaroid' ? h('span', { class: 'tape', 'aria-hidden': 'true', style: '--r:-6deg' }) : null,
+      h('div', { class: 'frame-inner' + (src ? '' : ' ph') },
         src ? h('img', { src: src, alt: alt || '', loading: 'eager' }) : h('span', { class: 'mono', text: monogram() })
       ),
+      shape === 'polaroid' ? h('div', { class: 'caption', text: (D.cover && D.cover.title) || '' }) : null,
       shape === 'circle' ? h('span', { class: 'ring', 'aria-hidden': 'true' }) : null
     );
+  }
+
+  /* Dekorasi khas gaya (lihat decor.js) */
+  function styleDeco(where, i) {
+    var S = window.DECOR && T.style ? window.DECOR.style(T.style) : null;
+    if (!S || !S[where]) return [];
+    return S[where](i || 0, monogram()) || [];
   }
 
   /* ---------- Kalender Google ---------- */
@@ -172,8 +184,12 @@
   }
 
   /* ---------- Bagian-bagian ---------- */
+  var SEC_I = 0;
   function section(id, children, cls) {
-    return h('section', { class: 'block reveal ' + (cls || ''), id: id, 'aria-labelledby': id + '-h' }, children);
+    var i = SEC_I++;
+    var panel = h('div', { class: 'panel shape-' + (i % 2 ? 'b' : 'a') + (i % 2 ? ' tilt-r' : ' tilt-l') }, h('div', { class: 'panel-in' }, children));
+    styleDeco('section', i).forEach(function (n) { panel.appendChild(n); });
+    return h('section', { class: 'block reveal ' + (cls || ''), id: id, 'aria-labelledby': id + '-h', style: '--si:' + i }, panel);
   }
   function heading(id, eyebrow, text, lead) {
     return [
@@ -199,6 +215,7 @@
     var first = (D.events || [])[0];
     var eff = T.opening || 'slide-up';
     var inner = h('div', { class: 'cover-inner' },
+      T.masthead ? A(h('div', { class: 'masthead' }, h('span', { class: 'mh-title', text: T.masthead }), h('span', { class: 'mh-line', text: (T.edition || 'Edisi Spesial') + (first ? ' · ' + longDate(first.start) : '') })), 'down') : null,
       orn('top'),
       A(h('div', { class: 'eyebrow', text: c.eyebrow || 'Undangan' }), 'down'),
       A(frame(c.photo, c.title), 'zoom'),
@@ -214,20 +231,24 @@
     );
     var stagger = 0;
     $$('[data-a]', inner).forEach(function (el) { el.style.setProperty('--i', stagger++); });
-    return h('div', { class: 'cover eff-' + eff, id: 'cover', role: 'dialog', 'aria-modal': 'true', 'aria-label': 'Sampul undangan' },
-      h('div', { class: 'panel l', 'aria-hidden': 'true' }),
-      h('div', { class: 'panel r', 'aria-hidden': 'true' }),
-      eff === 'envelope' ? h('div', { class: 'flap', 'aria-hidden': 'true' }) : null,
+    var cover = h('div', { class: 'cover eff-' + eff, id: 'cover', role: 'dialog', 'aria-modal': 'true', 'aria-label': 'Sampul undangan' },
+      h('div', { class: 'cpanel l', 'aria-hidden': 'true' }),
+      h('div', { class: 'cpanel r', 'aria-hidden': 'true' }),
+      eff === 'envelope' || eff === 'seal' ? h('div', { class: 'flap', 'aria-hidden': 'true' }) : null,
+      eff === 'paper' ? h('div', { class: 'fold', 'aria-hidden': 'true' }) : null,
       inner
     );
+    styleDeco('cover').forEach(function (n) { cover.appendChild(n); });
+    return cover;
   }
 
   /* --- Panel kiri (desktop) --- */
   function buildSide() {
     var c = D.cover || {};
     var first = (D.events || [])[0];
-    return h('aside', { class: 'side', 'aria-hidden': 'true' },
+    var side = h('aside', { class: 'side', 'aria-hidden': 'true' },
       h('div', { class: 'side-inner' },
+        T.masthead ? h('div', { class: 'masthead' }, h('span', { class: 'mh-title', text: T.masthead }), h('span', { class: 'mh-line', text: T.edition || 'Edisi Spesial' })) : null,
         orn('top'),
         h('div', { class: 'eyebrow', text: c.eyebrow || '' }),
         frame(c.photo, c.title, 'lg'),
@@ -236,6 +257,8 @@
         orn('bottom flip')
       )
     );
+    styleDeco('side').forEach(function (n) { side.appendChild(n); });
+    return side;
   }
 
   function buildHero() {
@@ -244,9 +267,11 @@
     var first = (D.events || [])[0];
     var target = D.countdownTo || (first && first.start);
     var cd = target ? A(h('div', { class: 'countdown', id: 'countdown', role: 'timer', 'aria-label': 'Hitung mundur acara' }), 'up') : null;
-    return h('section', { class: 'block hero reveal', id: 'home', 'aria-label': 'Pembuka' },
+    var heroPanel = h('div', { class: 'panel hero-panel' }, h('div', { class: 'panel-in' },
+      T.masthead ? A(h('div', { class: 'masthead' }, h('span', { class: 'mh-title', text: T.masthead }), h('span', { class: 'mh-line', text: (T.edition || 'Edisi Spesial') + (first ? ' · ' + longDate(first.start) : '') })), 'down') : null,
       orn('top'),
       A(h('div', { class: 'eyebrow', text: hr.eyebrow || c.eyebrow || '' }), 'down'),
+      T.heroFrame ? A(frame(c.photo, c.title), 'zoom') : null,
       letters('div', 'title-script', hr.title || c.title || '', 200),
       first ? A(h('div', { class: 'date-line', text: longDate(first.start) }), 'up') : null,
       hr.text ? A(h('p', { class: 'lead', text: hr.text }), 'up') : null,
@@ -255,7 +280,9 @@
         h('a', { class: 'btn small ghost', href: calUrl(first), target: '_blank', rel: 'noopener' }, icon('cal'), 'Simpan ke Kalender')
       ), 'up') : null,
       A(h('div', { class: 'scroll-hint', 'aria-hidden': 'true' }, icon('scroll')), 'up')
-    );
+    ));
+    styleDeco('section', 99).forEach(function (n) { heroPanel.appendChild(n); });
+    return h('section', { class: 'block hero reveal', id: 'home', 'aria-label': 'Pembuka' }, heroPanel);
   }
 
   function startCountdown() {
@@ -301,7 +328,7 @@
       var initial = (p.name || '?').trim().charAt(0).toUpperCase();
       var side = hs.people.length > 1 ? (i % 2 ? 'right' : 'left') : 'up';
       list.appendChild(A(h('div', { class: 'host' },
-        h('div', { class: 'avatar' + (hs.hidePhotos ? ' no-photo' : '') }, p.photo && !hs.hidePhotos ? h('img', { src: p.photo, alt: p.name, loading: 'lazy' }) : h('span', { text: initial })),
+        h('div', { class: 'avatar' + (hs.hidePhotos ? ' no-photo' : '') + (p.photo && !hs.hidePhotos ? '' : ' ph') }, p.photo && !hs.hidePhotos ? h('img', { src: p.photo, alt: p.name, loading: 'lazy' }) : h('span', { text: initial })),
         p.role ? h('div', { class: 'role', text: p.role }) : null,
         h('div', { class: 'name', text: p.name }),
         p.parents ? h('div', { class: 'parents', text: p.parents }) : null,
@@ -371,7 +398,7 @@
       });
     } else {
       for (var i = 0; i < (g.placeholders || 5); i++) {
-        grid.appendChild(A(h('div', { class: 'tile placeholder' }, h('span', { svg: ICON.photo }), 'Foto ' + (i + 1)), 'zoom'));
+        grid.appendChild(A(h('div', { class: 'tile placeholder ph' }, h('span', { svg: ICON.photo }), h('span', { class: 'ph-label', text: 'Foto ' + (i + 1) })), 'zoom'));
       }
     }
     return section('galeri', [heading('galeri', g.eyebrow || 'Galeri', g.heading || 'Momen Kami', g.intro), grid, dlg]);
@@ -669,7 +696,7 @@
     setTimeout(function () {
       cover.hidden = true;
       var m = $('#main'); if (m) m.focus({ preventScroll: true });
-    }, REDUCED ? 300 : 2000);
+    }, REDUCED ? 300 : 2700);
   }
 
   /* ---------- Animasi muncul saat scroll ---------- */
@@ -690,6 +717,8 @@
     var c = D.cover || {};
     if (c.title) document.title = (c.eyebrow ? c.eyebrow + ' ' : '') + c.title + (GUEST ? ' — untuk ' + GUEST : '');
     if (T.pattern) document.documentElement.classList.add('pat-' + T.pattern);
+    if (T.style) document.documentElement.classList.add('st-' + T.style);
+    if (T.variant) document.documentElement.classList.add('var-' + T.variant);
     var main = h('main', { class: 'main', id: 'main', tabindex: '-1' },
       buildHero(),
       buildOpening(),
@@ -709,6 +738,7 @@
     var loader = buildLoader();
     document.body.replaceChildren(loader, buildCover(), h('div', { class: 'layout' }, buildSide(), main));
     var parts = buildParticles(); if (parts) document.body.appendChild(parts);
+    styleDeco('page').forEach(function (n) { document.body.insertBefore(n, document.body.firstChild); });
     document.body.classList.add('locked');
     buildFabs();
     buildDock();

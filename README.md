@@ -27,6 +27,8 @@ Tidak perlu build, tidak perlu `npm install`. Langsung bisa di-deploy ke Vercel.
 │   ├── css/invitation.css     Gaya bersama semua undangan
 │   ├── js/landing.js          Filter template, menu HP, link WA
 │   ├── js/invitation.js       Mesin undangan (cover, countdown, RSVP, dll.)
+│   ├── js/decor.js            Ilustrasi SVG: bunga, ranting, kupu-kupu, ornamen, segel lilin
+│   ├── css/styles.css         5 gaya tata letak (botanical, editorial, collage, royal, watercolor)
 │   ├── img/                   Foto klien
 │   └── audio/                 Musik latar
 ├── assets/js/templates-data.js  Daftar template yang tampil di landing page
@@ -116,10 +118,14 @@ Domain sendiri (mis. `undanganku.id`) bisa ditambahkan di **Project → Settings
 |---|---|
 | `slug` | ID unik undangan |
 | `timeZone` | `Asia/Jakarta` (WIB), `Asia/Makassar` (WITA), `Asia/Jayapura` (WIT) |
-| `theme.opening` | Efek buka sampul: `envelope`, `curtain`, `gate`, `zoom`, `slide-up` |
+| `theme.style` | Gaya tata letak: `botanical` (panel lengkung + buket bunga), `editorial` (koran/majalah), `collage` (amplop, polaroid, renda), `royal` (tirai, ornamen sudut, kamea oval), `watercolor` (cat air, tepi sobek, ranting, kupu-kupu) |
+| `theme.variant` | Varian gaya: `magazine` (editorial berwarna), `scrapbook` (kolase anak) |
+| `theme.masthead`, `theme.edition` | Judul koran & keterangan edisi (khusus gaya `editorial`) |
+| `theme.heroFrame` | `true` untuk menampilkan bingkai foto juga di bagian pembuka |
+| `theme.opening` | Efek buka sampul: `bloom` (buket membelah), `paper` (halaman dibalik), `seal` (segel lilin retak + amplop), `drape` (tirai terkumpul), `wash` (cat air meluber), juga `envelope`, `curtain`, `gate`, `zoom`, `slide-up` |
 | `theme.particles` | `petals`, `leaves`, `stars`, `sparkle`, `bubbles`, `confetti`, `hearts`, `snow`, `none` |
 | `theme.ornament` | `floral`, `batik`, `leaf`, `line`, `islamic`, `cloud`, `confetti`, `geo`, `deco`, `wave`, `arch`, `sparkle` |
-| `theme.frame` | Bingkai foto/monogram di sampul: `arch`, `circle`, `none` |
+| `theme.frame` | Bingkai foto/monogram di sampul: `arch`, `circle`, `oval` (dengan mahkota), `polaroid`, `rect`, `none` |
 | `theme.pattern` | Pola latar halus: `dots`, `grid`, `diamond` (opsional) |
 | `monogram` | Teks di bingkai & layar memuat bila belum ada foto (default: inisial dari judul) |
 | `autoScroll` | `false` untuk menyembunyikan tombol gulir otomatis |
@@ -140,6 +146,8 @@ Domain sendiri (mis. `undanganku.id`) bisa ditambahkan di **Project → Settings
 | `wishes` | `true` atau `{ heading, text }`; `false` untuk mematikan |
 | `endpoint` | URL Google Apps Script (lihat bagian 6) |
 | `closing` | `text`, `greeting`, `signatureLabel`, `signature` |
+
+Warna bunga & dekorasi memakai variabel `--fl-1`, `--fl-2`, `--fl-3`, `--leaf`, `--leaf-2`, `--gold`, `--seal`, `--drape`, `--velvet`, `--env`, `--hill-1..3`, `--sky-1/2`, `--branch`.
 
 Warna & font tiap template diatur di blok `<style>` paling atas (`--bg`, `--accent`, `--font-display`, dll.), jadi Anda bisa membuat variasi warna baru tanpa menyentuh mesin undangan.
 
@@ -209,8 +217,8 @@ Saat masa aktif habis dan klien tidak memperpanjang: hapus blok rewrite-nya dan 
 
 ## Setelah mengubah file CSS/JS
 
-Setiap link ke file `.css`/`.js` memakai nomor versi, mis. `/assets/css/landing.css?v=2`.
-Bila Anda mengubah isi file di `assets/` atau `site.config.js`, naikkan nomornya (cari-ganti `?v=2` → `?v=3`
+Setiap link ke file `.css`/`.js` memakai nomor versi, mis. `/assets/css/landing.css?v=3`.
+Bila Anda mengubah isi file di `assets/` atau `site.config.js`, naikkan nomornya (cari-ganti `?v=3` → `?v=4`
 di semua file `.html`) agar browser pengunjung langsung memakai versi terbaru, bukan versi lama yang tersimpan.
 
 Bila halaman tampak berantakan setelah update, coba buka di tab penyamaran (incognito) atau tekan **Ctrl+Shift+R**.

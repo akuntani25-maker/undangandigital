@@ -32,7 +32,7 @@
       var card = el('article', { class: 'tcard rv', 'data-cat': t.cat },
         prev,
         el('div', { class: 'tbody' },
-          el('div', { class: 'top' }, el('h3', { text: t.name }), el('span', { class: 'chip', text: t.label })),
+          el('div', { class: 'top' }, el('h3', { text: t.name }), el('span', { class: 'chip', text: t.isNew ? 'Baru · ' + t.label : t.label })),
           fx,
           el('div', { class: 'row' },
             el('a', { class: 'btn sm outline', href: demo, target: '_blank', rel: 'noopener', text: 'Lihat Demo' }),

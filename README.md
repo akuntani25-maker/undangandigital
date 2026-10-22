@@ -29,6 +29,7 @@ Tidak perlu build, tidak perlu `npm install`. Langsung bisa di-deploy ke Vercel.
 │   ├── js/invitation.js       Mesin undangan (cover, countdown, RSVP, dll.)
 │   ├── js/decor.js            Ilustrasi SVG: bunga, ranting, kupu-kupu, ornamen, segel lilin
 │   ├── css/styles.css         5 gaya tata letak (botanical, editorial, collage, royal, watercolor)
+│   ├── css/canvas.css, js/canvas.js   Gaya kanvas: adegan taman, tugu, rumah kebaya, ondel-ondel + animasi loop
 │   ├── img/                   Foto klien
 │   └── audio/                 Musik latar
 ├── assets/js/templates-data.js  Daftar template yang tampil di landing page
@@ -118,11 +119,11 @@ Domain sendiri (mis. `undanganku.id`) bisa ditambahkan di **Project → Settings
 |---|---|
 | `slug` | ID unik undangan |
 | `timeZone` | `Asia/Jakarta` (WIB), `Asia/Makassar` (WITA), `Asia/Jayapura` (WIT) |
-| `theme.style` | Gaya tata letak: `botanical` (panel lengkung + buket bunga), `editorial` (koran/majalah), `collage` (amplop, polaroid, renda), `royal` (tirai, ornamen sudut, kamea oval), `watercolor` (cat air, tepi sobek, ranting, kupu-kupu) |
+| `theme.style` | Gaya tata letak: `botanical` (panel lengkung + buket bunga), `editorial` (koran/majalah), `collage` (amplop, polaroid, renda), `royal` (tirai, ornamen sudut, kamea oval), `watercolor` (cat air, tepi sobek, ranting, kupu-kupu), `canvas` (adegan ilustrasi menyambung + animasi loop — perlu memuat `canvas.css` & `canvas.js`, lihat template Taman Betawi) |
 | `theme.variant` | Varian gaya: `magazine` (editorial berwarna), `scrapbook` (kolase anak) |
 | `theme.masthead`, `theme.edition` | Judul koran & keterangan edisi (khusus gaya `editorial`) |
 | `theme.heroFrame` | `true` untuk menampilkan bingkai foto juga di bagian pembuka |
-| `theme.opening` | Efek buka sampul: `bloom` (buket membelah), `paper` (halaman dibalik), `seal` (segel lilin retak + amplop), `drape` (tirai terkumpul), `wash` (cat air meluber), juga `envelope`, `curtain`, `gate`, `zoom`, `slide-up` |
+| `theme.opening` | Efek buka sampul: `bloom` (buket membelah), `paper` (halaman dibalik), `seal` (segel lilin retak + amplop), `drape` (tirai terkumpul), `wash` (cat air meluber), `camera` (kamera menyelam ke pintu rumah — gaya canvas), juga `envelope`, `curtain`, `gate`, `zoom`, `slide-up` |
 | `theme.particles` | `petals`, `leaves`, `stars`, `sparkle`, `bubbles`, `confetti`, `hearts`, `snow`, `none` |
 | `theme.ornament` | `floral`, `batik`, `leaf`, `line`, `islamic`, `cloud`, `confetti`, `geo`, `deco`, `wave`, `arch`, `sparkle` |
 | `theme.frame` | Bingkai foto/monogram di sampul: `arch`, `circle`, `oval` (dengan mahkota), `polaroid`, `rect`, `none` |
@@ -217,8 +218,8 @@ Saat masa aktif habis dan klien tidak memperpanjang: hapus blok rewrite-nya dan 
 
 ## Setelah mengubah file CSS/JS
 
-Setiap link ke file `.css`/`.js` memakai nomor versi, mis. `/assets/css/landing.css?v=3`.
-Bila Anda mengubah isi file di `assets/` atau `site.config.js`, naikkan nomornya (cari-ganti `?v=3` → `?v=4`
+Setiap link ke file `.css`/`.js` memakai nomor versi, mis. `/assets/css/landing.css?v=4`.
+Bila Anda mengubah isi file di `assets/` atau `site.config.js`, naikkan nomornya (cari-ganti `?v=4` → `?v=5`
 di semua file `.html`) agar browser pengunjung langsung memakai versi terbaru, bukan versi lama yang tersimpan.
 
 Bila halaman tampak berantakan setelah update, coba buka di tab penyamaran (incognito) atau tekan **Ctrl+Shift+R**.

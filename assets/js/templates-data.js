@@ -1,6 +1,7 @@
 /* Daftar template yang tampil di landing page.
    Tambah template baru = tambah satu baris di sini (+ folder di /templates). */
 window.TEMPLATES = [
+  { slug: 'taman-betawi',      name: 'Taman Betawi',      cat: 'nikah',    label: 'Adat Betawi', eyebrow: 'The Wedding of',  title: 'Rizky & Salma',    date: '15 · 05 · 2027',         bg: '#EEF5C4', fg: '#9A6512', font: "'Pinyon Script',cursive",      size: 40, weight: 400, fx: 'Kamera menyelam', px: 'Kanvas', isNew: true },
   { slug: 'sakura-pastel',     name: 'Sakura Pastel',     cat: 'nikah',    label: 'Pernikahan',  eyebrow: 'The Wedding of',  title: 'Raka & Nadia',     date: '14 · 02 · 2027',         bg: '#F7E1E4', fg: '#6E2F45', font: "'Great Vibes',cursive",        size: 40, weight: 400, fx: 'Bunga mekar', px: 'Botanical' },
   { slug: 'midnight-gold',     name: 'Midnight Gold',     cat: 'nikah',    label: 'Pernikahan',  eyebrow: 'The Wedding of',  title: 'Adrian & Clarissa',date: '12 · 06 · 2027',         bg: '#121119', fg: '#D6B46A', font: "'Italianno',cursive",          size: 44, weight: 400, fx: 'Segel lilin', px: 'Kolase' },
   { slug: 'botanical-sage',    name: 'Botanical Sage',    cat: 'nikah',    label: 'Pernikahan',  eyebrow: 'Save the Date',   title: 'Dimas & Ayu',      date: '21 · 03 · 2027',         bg: '#DDE5D6', fg: '#2F4A35', font: "'Parisienne',cursive",         size: 38, weight: 400, fx: 'Bunga mekar', px: 'Botanical' },

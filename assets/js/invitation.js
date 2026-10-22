@@ -163,10 +163,10 @@
   }
 
   /* Dekorasi khas gaya (lihat decor.js) */
-  function styleDeco(where, i) {
+  function styleDeco(where, i, id) {
     var S = window.DECOR && T.style ? window.DECOR.style(T.style) : null;
     if (!S || !S[where]) return [];
-    return S[where](i || 0, monogram()) || [];
+    return S[where](i || 0, monogram(), id || '', D) || [];
   }
 
   /* ---------- Kalender Google ---------- */
@@ -188,7 +188,7 @@
   function section(id, children, cls) {
     var i = SEC_I++;
     var panel = h('div', { class: 'panel shape-' + (i % 2 ? 'b' : 'a') + (i % 2 ? ' tilt-r' : ' tilt-l') }, h('div', { class: 'panel-in' }, children));
-    styleDeco('section', i).forEach(function (n) { panel.appendChild(n); });
+    styleDeco('section', i, id).forEach(function (n) { panel.appendChild(n); });
     return h('section', { class: 'block reveal ' + (cls || ''), id: id, 'aria-labelledby': id + '-h', style: '--si:' + i }, panel);
   }
   function heading(id, eyebrow, text, lead) {
@@ -281,7 +281,7 @@
       ), 'up') : null,
       A(h('div', { class: 'scroll-hint', 'aria-hidden': 'true' }, icon('scroll')), 'up')
     ));
-    styleDeco('section', 99).forEach(function (n) { heroPanel.appendChild(n); });
+    styleDeco('section', 99, 'home').forEach(function (n) { heroPanel.appendChild(n); });
     return h('section', { class: 'block hero reveal', id: 'home', 'aria-label': 'Pembuka' }, heroPanel);
   }
 

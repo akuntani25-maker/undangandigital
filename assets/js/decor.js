@@ -227,6 +227,7 @@
   window.DECOR = {
     style: function (name) { return STYLE[name] || null; },
     seal: seal, crest: crest, corner: corner, bouquet: bouquet, branch: branch, butterfly: butterfly, waves: waves,
-    node: node
+    node: node, flower: FLOWER, leaf: leaf, rng: rng, esc: esc,
+    register: function (name, def) { STYLE[name] = def; }
   };
 })();

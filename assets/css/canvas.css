@@ -1,0 +1,173 @@
+/* =========================================================
+   GAYA "CANVAS" — adegan ilustrasi menyambung, tekstur kanvas, animasi loop.
+   Dipakai bersama canvas.js (theme.style: 'canvas').
+   ========================================================= */
+.st-canvas {
+  --cv-paper: #FBF6E1; --cv-wash: rgba(214, 228, 150, .45);
+  --cv-sky-1: #FFFCEB; --cv-sky-2: #F1F6C9; --cv-sky-3: #D9E8A0;
+  --cv-mtn-1: #C3D883; --cv-mtn-2: #A2C35E;
+  --cv-tree-1: #6E9A35; --cv-tree-2: #93BA46; --cv-tree-3: #C6DE78; --cv-trunk: #6B4A2E;
+  --cv-cypress: #3F7A3A; --cv-hedge: #5E9440;
+  --cv-roof: #D9653C; --cv-roof-d: #B24A29; --cv-wall: #F3D35C; --cv-trim: #3E8E4C; --cv-door: #2F7A43;
+  --cv-lawn: #8DBB4E; --cv-lawn-2: #A9CC62; --cv-path: #EEE2B4;
+  --cv-tugu: #F5E5B8; --cv-tugu-d: #D8BE82; --cv-flame: #F2B632; --cv-water: #8CCDE0;
+  --cv-lantern: #E2553A; --cv-gold: #D4A72C; --cv-bird: #5B4A33;
+  --cv-wisteria: #C9A9DF; --cv-wisteria-2: #A983C9;
+  --on-face-m: #C7372F; --on-robe-m: #2E8B57; --on-sash-m: #C8323A;
+  --on-face-f: #F7F0E6; --on-robe-f: #E2508F; --on-sash-f: #E3B54A;
+  --on-hair: #1E1A17; --on-gold: #E1B43B; --on-fringe: #D9B26A;
+}
+
+.st-canvas body { background: var(--cv-paper); }
+.st-canvas .main { background: transparent; box-shadow: none; }
+
+/* Tekstur kanvas (anyaman + butiran) */
+.canvas-tex {
+  position: absolute; inset: 0; pointer-events: none; z-index: 5; mix-blend-mode: multiply; opacity: .6;
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' seed='4'/%3E%3CfeColorMatrix values='0 0 0 0 .45 0 0 0 0 .38 0 0 0 0 .22 0 0 0 .35 0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E"),
+    repeating-linear-gradient(0deg, rgba(110, 85, 35, .06) 0 1px, transparent 1px 3px),
+    repeating-linear-gradient(90deg, rgba(110, 85, 35, .05) 0 1px, transparent 1px 3px);
+}
+
+/* ---------- Adegan besar ---------- */
+.scene { position: absolute; inset: 0; overflow: hidden; z-index: 0; }
+.scene .cam { position: absolute; inset: 0; transform-origin: 50% 58%; will-change: transform; }
+.scene .sky { position: absolute; inset: 0; background: linear-gradient(180deg, var(--cv-sky-1), var(--cv-sky-2) 42%, var(--cv-sky-3) 72%); }
+.scene .sun {
+  position: absolute; left: 50%; top: 26%; width: 130vmin; height: 130vmin; transform: translate(-50%, -50%);
+  background: radial-gradient(circle, rgba(255, 255, 244, .95), rgba(255, 250, 214, .4) 32%, transparent 62%);
+  animation: sunpulse 7s ease-in-out infinite;
+}
+.scene .clouds { position: absolute; left: 0; top: 0; width: 100%; height: 40%; }
+.scene .world { position: absolute; inset: 0; width: 100%; height: 100%; }
+.scene .birds { position: absolute; left: 0; top: 9%; width: 55%; height: 22%; animation: flyacross 26s linear infinite; }
+@keyframes sunpulse { 0%, 100% { opacity: .85; transform: translate(-50%, -50%) scale(1); } 50% { opacity: 1; transform: translate(-50%, -50%) scale(1.08); } }
+@keyframes flyacross { from { transform: translateX(-70%); } to { transform: translateX(210%); } }
+
+/* Animasi loop unsur-unsur */
+.cloud { animation: drift 30s ease-in-out infinite alternate; animation-delay: calc(var(--d) * -1); }
+@keyframes drift { from { transform: translateX(-26px); } to { transform: translateX(40px); } }
+.tree { transform-box: fill-box; transform-origin: 50% 100%; animation: treesway 7s ease-in-out infinite alternate; animation-delay: calc(var(--d) * -1); }
+@keyframes treesway { from { transform: rotate(-1.4deg); } to { transform: rotate(1.4deg); } }
+.flame { transform-box: fill-box; transform-origin: 50% 100%; animation: flicker 1.3s ease-in-out infinite alternate; }
+@keyframes flicker { 0% { transform: scale(.92, .86); } 50% { transform: scale(1.04, 1.1); } 100% { transform: scale(.97, 1.02) skewX(3deg); } }
+.lantern { transform-box: fill-box; transform-origin: 50% 0; animation: swing 2.8s ease-in-out infinite alternate; animation-delay: calc(var(--d) * -1); }
+@keyframes swing { from { transform: rotate(-9deg); } to { transform: rotate(9deg); } }
+.ondel { transform-box: fill-box; transform-origin: 50% 100%; animation: ondelsway 2.4s ease-in-out infinite alternate; animation-delay: calc(var(--d) * -1); }
+@keyframes ondelsway { 0% { transform: rotate(-3deg) translateY(0); } 50% { transform: rotate(0) translateY(-5px); } 100% { transform: rotate(3deg) translateY(0); } }
+.kembang { transform-box: fill-box; transform-origin: 50% 100%; animation: shimmy 1.2s ease-in-out infinite alternate; }
+@keyframes shimmy { from { transform: rotate(-2deg); } to { transform: rotate(2deg); } }
+.jet { fill: none; stroke: var(--cv-water); stroke-width: 2.6; stroke-linecap: round; stroke-dasharray: .22 .1; animation: flow 1.1s linear infinite; }
+@keyframes flow { to { stroke-dashoffset: -.64; } }
+.bird path { transform-box: fill-box; transform-origin: 50% 50%; animation: flapb .45s ease-in-out infinite alternate; }
+.bird:nth-child(2n) path { animation-duration: .38s; }
+@keyframes flapb { from { transform: scaleY(1); } to { transform: scaleY(-.4); } }
+.wis { transform-box: fill-box; transform-origin: 50% 0; animation: swing 3.8s ease-in-out infinite alternate; animation-delay: calc(var(--d) * -1); }
+
+/* Kamera: zoom ke tokoh, geser ke tugu, kembali — berulang */
+.st-canvas .hero.go .cam, .st-canvas .side.go .cam { animation: camera 26s ease-in-out infinite; }
+@keyframes camera {
+  0% { transform: scale(1.04) translate(0, 0); }
+  28% { transform: scale(1.42) translate(0, -13%); }
+  50% { transform: scale(1.3) translate(-2%, 12%); }
+  74% { transform: scale(1.12) translate(3%, 3%); }
+  100% { transform: scale(1.04) translate(0, 0); }
+}
+
+/* ---------- Bagian-bagian ---------- */
+.st-canvas section.block { padding: 0; }
+.st-canvas section.block + section.block::before { display: none; }
+.st-canvas .block .panel {
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse 70% 40% at 15% 8%, rgba(255, 255, 255, .75), transparent 60%),
+    radial-gradient(ellipse 80% 45% at 85% 92%, var(--cv-wash), transparent 60%),
+    radial-gradient(ellipse 50% 30% at 90% 30%, rgba(201, 169, 223, .18), transparent 60%),
+    var(--cv-paper);
+  padding: 118px 52px 76px;
+}
+.st-canvas .panel-in { position: relative; z-index: 6; }
+.st-canvas .orn.small { margin-bottom: 10px; }
+.st-canvas .block h2 { font-family: var(--font-script); font-weight: 400; font-size: calc(clamp(2.2rem, 9vw, 2.8rem) * var(--script-size)); color: var(--cv-title, var(--accent)); }
+.st-canvas .eyebrow { color: var(--cv-title, var(--accent)); }
+.garland { position: absolute; left: 0; right: 0; top: -4px; height: 96px; z-index: 4; }
+.garland svg, .lanterns svg { width: 100%; height: 100%; display: block; overflow: visible; }
+.lanterns { position: absolute; left: 0; right: 0; top: 0; height: 74px; z-index: 4; }
+.vines { position: absolute; top: 70px; width: 46px; height: 300px; z-index: 4; }
+.vines svg { width: 100%; height: 100%; overflow: visible; }
+.vines.vl { left: 0; }
+.vines.vr { right: 0; transform: scaleX(-1); }
+.garden { position: absolute; left: 0; right: 0; bottom: 0; height: 300px; z-index: 3; }
+.garden::before { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, transparent, color-mix(in srgb, var(--cv-sky-3) 55%, transparent) 38%, var(--cv-sky-2) 60%); }
+.garden svg { position: relative; width: 100%; height: 100%; display: block; }
+.st-canvas #tuan-rumah .panel, .st-canvas #penutup .panel { padding-bottom: 300px; }
+.birds-wrap { position: absolute; left: 0; top: 60px; width: 60%; height: 120px; z-index: 4; animation: flyacross 22s linear infinite; }
+.birds-wrap svg { width: 100%; height: 100%; }
+.c-bfly { right: 46px !important; left: auto !important; top: 140px !important; }
+
+/* Bunga pada karangan & semak: mekar saat terlihat */
+.st-canvas .go .garland .fl, .st-canvas .go .scene .fl { animation-delay: calc(var(--d) * 70ms + 200ms); }
+
+/* Pembuka (hero): adegan penuh + judul diketik */
+.st-canvas .hero { min-height: 0; background: none; }
+.st-canvas .block.hero .panel { min-height: 128vh; padding: 12vh 24px 0; background: none; display: block; overflow: hidden; }
+.st-canvas .block.hero .panel-in { text-shadow: 0 1px 0 rgba(255, 255, 255, .8), 0 0 18px rgba(255, 252, 230, .9); }
+.st-canvas .block.hero .countdown > div { background: rgba(255, 253, 240, .78); backdrop-filter: blur(3px); -webkit-backdrop-filter: blur(3px); }
+.st-canvas .block.hero .lead { color: var(--ink); font-weight: 500; }
+.st-canvas .title-script { color: var(--cv-title, var(--accent)); }
+.st-canvas .letters .ch { opacity: 0; transform: none; filter: none; }
+.st-canvas .go .letters .ch, .st-canvas .cover.go .letters .ch { animation: typeIn .01s steps(1) forwards; animation-delay: calc(var(--base, 0ms) + var(--i) * 85ms); }
+@keyframes typeIn { to { opacity: 1; } }
+
+/* Komponen di atas kertas */
+.st-canvas .card, .st-canvas .quote, .st-canvas form.form, .st-canvas .wish {
+  background: rgba(255, 253, 242, .82); border: 1.5px solid color-mix(in srgb, var(--cv-gold) 45%, transparent); box-shadow: 0 10px 26px rgba(120, 95, 30, .12);
+}
+.st-canvas .avatar {
+  border-radius: 50%; width: 170px; height: 210px; border: 5px solid var(--cv-gold);
+  outline: 2px solid color-mix(in srgb, var(--cv-gold) 60%, transparent); outline-offset: 6px;
+  box-shadow: 0 0 0 14px rgba(255, 250, 225, .7), 0 14px 30px rgba(120, 95, 30, .25);
+}
+.st-canvas .gallery .tile { border: 4px solid #FFFDF2; outline: 2px solid var(--cv-gold); outline-offset: -10px; border-radius: 6px; }
+.st-canvas .gallery .tile:nth-child(3n+1) { border-radius: 120px 120px 6px 6px; }
+.st-canvas .countdown > div { border-color: color-mix(in srgb, var(--cv-gold) 50%, transparent); }
+/* Gulungan ayat/kutipan yang terbuka */
+.st-canvas .quote {
+  border: 0; border-radius: 4px; padding: 40px 26px 34px; margin-top: 46px; overflow: visible;
+  background: linear-gradient(90deg, rgba(0, 0, 0, .05), transparent 8%, transparent 92%, rgba(0, 0, 0, .05)), #FFF7DA;
+  clip-path: inset(0 -30px 100% -30px); transition: clip-path 1.6s var(--ease) .3s;
+}
+.st-canvas .quote::before, .st-canvas .quote::after {
+  content: ""; position: absolute; left: -16px; right: -16px; height: 22px; border-radius: 11px;
+  background: linear-gradient(180deg, #F7E39A, var(--cv-gold) 55%, #A9801F);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, .18);
+}
+.st-canvas .quote::before { top: -11px; }
+.st-canvas .quote::after { bottom: -11px; transform: translateY(-260px); transition: transform 1.6s var(--ease) .3s; }
+.st-canvas .reveal.go .quote { clip-path: inset(-20px -30px -20px -30px); }
+.st-canvas .reveal.go .quote::after { transform: none; }
+.st-canvas .quote .qmark { top: -48px; }
+
+/* Sampul: adegan penuh, kamera menyelam ke pintu saat dibuka */
+.st-canvas .cover { background: var(--cv-sky-1); }
+.st-canvas .cover .cover-inner { justify-content: flex-start; padding-top: 9vh; text-shadow: 0 1px 0 rgba(255, 255, 255, .8), 0 0 18px rgba(255, 252, 230, .9); }
+.st-canvas .cover .guest-box { background: rgba(255, 253, 240, .78); }
+.st-canvas .cover .orn { display: none; }
+.cover.eff-camera .cam { transition: transform 1.7s cubic-bezier(.6, 0, .25, 1); transform-origin: 50% 66%; }
+.cover.eff-camera.opening .cam { transform: scale(2.8) translateY(6%); }
+.cover.eff-camera { transition: opacity .8s ease 1.2s; }
+.cover.eff-camera.opened { opacity: 0; }
+
+/* Desktop: adegan di kiri, kartu bergulir di kanan */
+.st-canvas .side { padding: 0; align-items: flex-start; background: var(--cv-sky-1); }
+.st-canvas .side .side-inner { position: relative; z-index: 6; margin-top: 10vh; text-shadow: 0 1px 0 rgba(255, 255, 255, .8), 0 0 22px rgba(255, 252, 230, .95); }
+.st-canvas .side .orn { display: none; }
+.st-canvas .side .title-script { font-size: calc(5.4rem * var(--script-size)); }
+
+@media (prefers-reduced-motion: reduce) {
+  .scene .cam, .scene .birds, .birds-wrap { animation: none !important; }
+  .st-canvas .letters .ch { opacity: 1 !important; }
+  .st-canvas .quote { clip-path: none !important; }
+  .st-canvas .quote::after { transform: none !important; }
+}

@@ -505,3 +505,5 @@ body.is-open .dock { transform: translate(-50%, 0); }
   .orn [pathLength] { stroke-dashoffset: 0; }
   .orn svg [fill="currentColor"], .orn svg g[fill], .orn svg g[style] { opacity: 1; }
 }
+
+.cover:focus { outline: none; }

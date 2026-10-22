@@ -1,0 +1,160 @@
+/* =========================================================
+   GAYA "PAINTED" — satu kanvas lukisan yang menyatu.
+   Gambar (adegan, kertas, bingkai, tombol, kartu) dibuat oleh painter.js + adat.js
+   dan dipasang lewat variabel --pt-*.
+   ========================================================= */
+.st-painted { --pt-bw: 86px; --pt-side: 40px; --pt-title: var(--title, var(--accent)); }
+@media (min-width: 600px) { .st-painted { --pt-bw: 104px; --pt-side: 64px; } }
+
+.st-painted body { background: var(--pt-paper, none) 0 0 / 512px 512px repeat, var(--bg); }
+.st-painted .main {
+  background:
+    repeating-linear-gradient(0deg, rgba(90, 64, 30, .05) 0 1px, transparent 1px 3px),
+    repeating-linear-gradient(90deg, rgba(90, 64, 30, .04) 0 1px, transparent 1px 3px),
+    var(--pt-bl, none) left top / var(--pt-bw) auto repeat-y,
+    var(--pt-br, none) right top / var(--pt-bw) auto repeat-y,
+    var(--pt-paper, none) 0 0 / 512px 512px repeat,
+    var(--bg);
+  box-shadow: none;
+}
+/* ---------- Adegan berlapis ---------- */
+.pscene { position: absolute; inset: 0; overflow: hidden; z-index: 0; background: var(--bg); }
+.pcam { position: absolute; inset: 0; transform-origin: 50% 62%; will-change: transform; }
+.ply { position: absolute; inset: 0; width: 100%; height: 100%; display: block; object-fit: cover; object-position: 50% 100%; pointer-events: none; user-select: none; -webkit-user-drag: none; opacity: 0; transition: opacity .8s ease; }
+.ply.on { opacity: 1; }
+.ply.ly-clouds { object-position: 50% 0; }
+.ly-clouds { animation: pdrift 46s ease-in-out infinite alternate; }
+.ly-mist { animation: pmist 28s ease-in-out infinite alternate; }
+.ly-trees { transform-origin: 50% 100%; animation: pwind 7s ease-in-out infinite alternate; }
+.ly-props { transform-origin: 50% 100%; animation: pwind 4.4s ease-in-out infinite alternate-reverse; }
+.ly-front { transform-origin: 50% 100%; animation: pwind2 5.6s ease-in-out infinite alternate; }
+@keyframes pdrift { from { transform: translateX(-3.5%); } to { transform: translateX(3.5%); } }
+@keyframes pmist { from { transform: translateX(-6%); opacity: .75; } to { transform: translateX(6%); opacity: 1; } }
+@keyframes pwind { from { transform: skewX(-.9deg); } to { transform: skewX(.9deg); } }
+@keyframes pwind2 { from { transform: skewX(.7deg); } to { transform: skewX(-.7deg) translateY(2px); } }
+.pbirds { position: absolute; left: 0; top: 8%; width: 46%; height: 20%; animation: pfly 30s linear infinite; }
+.pbird path { transform-box: fill-box; transform-origin: center; animation: pflap .45s ease-in-out infinite alternate; }
+.pbird:nth-child(2n) path { animation-duration: .36s; }
+@keyframes pfly { from { transform: translateX(-60%); } to { transform: translateX(230%); } }
+@keyframes pflap { from { transform: scaleY(1); } to { transform: scaleY(-.4); } }
+/* Kamera: zoom ke pasangan, naik ke langit, kembali */
+.st-painted .hero.go .pcam, .st-painted .side.go .pcam { animation: pcamera 30s ease-in-out infinite; }
+@keyframes pcamera {
+  0% { transform: scale(1.03) translate(0, 0); }
+  30% { transform: scale(1.38) translate(0, -11%); }
+  52% { transform: scale(1.24) translate(-2%, 10%); }
+  76% { transform: scale(1.1) translate(2.5%, 2%); }
+  100% { transform: scale(1.03) translate(0, 0); }
+}
+
+/* ---------- Bagian-bagian: tanpa kotak, menyatu di kanvas ---------- */
+.st-painted section.block { padding: 58px var(--pt-side) 34px; }
+.st-painted section.block + section.block::before { display: none; }
+.st-painted .panel-in { position: relative; z-index: 2; }
+.st-painted .orn { display: none; }
+.st-painted .block h2 { font-family: var(--font-script); font-weight: 400; font-size: calc(clamp(2.3rem, 9.5vw, 3rem) * var(--script-size)); color: var(--pt-title); line-height: 1.15; margin-bottom: 0; }
+.st-painted .block h2::after { content: ""; display: block; width: 210px; max-width: 80%; height: 42px; margin: 6px auto 12px; background: var(--pt-div, none) center / contain no-repeat; }
+.st-painted .eyebrow { color: var(--pt-title); letter-spacing: .3em; }
+.st-painted .lead, .st-painted p { color: var(--ink); }
+.st-painted .greet { color: var(--pt-title); }
+.st-painted .title-script { color: var(--pt-title); }
+
+/* Pembuka: adegan penuh yang memudar ke kanvas */
+.st-painted .hero { min-height: 0; background: none; padding: 0 !important; }
+.st-painted .block.hero .panel { position: relative; min-height: 128vh; padding: 11vh 22px 0; }
+.st-painted .ps-hero { -webkit-mask-image: linear-gradient(#000 78%, transparent); mask-image: linear-gradient(#000 78%, transparent); }
+.st-painted .block.hero .panel-in { z-index: 9; text-shadow: 0 1px 0 rgba(255, 255, 255, .7), 0 0 20px rgba(255, 250, 235, .95), 0 0 6px rgba(255, 250, 235, .9); }
+.st-painted .block.hero .lead { font-weight: 600; }
+
+/* Adegan kecil di tengah & penutup */
+.pvignette {
+  position: relative; height: 320px; margin: 30px calc(-1 * var(--pt-side)) -34px;
+  -webkit-mask-image: radial-gradient(ellipse 78% 82% at 50% 58%, #000 52%, transparent 78%);
+          mask-image: radial-gradient(ellipse 78% 82% at 50% 58%, #000 52%, transparent 78%);
+}
+.pvignette .pscene { background: transparent; }
+
+/* ---------- Komponen yang dilukis ---------- */
+.st-painted .btn {
+  background: var(--pt-btn, var(--accent)) center / 100% 100% no-repeat; border: 0; border-radius: 0; box-shadow: none;
+  color: #FFF8EA; text-shadow: 0 1px 2px rgba(0, 0, 0, .4); min-height: 54px; padding: 14px 34px; font-weight: 700; letter-spacing: .03em;
+}
+.st-painted .btn::after { display: none; }
+.st-painted .btn:hover { transform: translateY(-2px) rotate(-.8deg); box-shadow: none; filter: brightness(1.06); }
+.st-painted .btn.ghost { background-image: var(--pt-btn-ghost, none); color: var(--accent); text-shadow: none; }
+.st-painted .btn.small { min-height: 48px; padding: 10px 24px; }
+.st-painted .btn.pulse { animation: pbreath 2.6s ease-in-out 3s infinite; }
+@keyframes pbreath { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05) rotate(-.6deg); } }
+
+.st-painted .card, .st-painted form.form, .st-painted .wish, .st-painted .quote, .st-painted .guest-box,
+.st-painted .stats > div, .st-painted .countdown > div, .st-painted .dock {
+  background: none; border-radius: 0; box-shadow: none; backdrop-filter: none; -webkit-backdrop-filter: none;
+  border: 22px solid transparent; border-image: var(--pt-card, none) 58 fill / 22px / 0 stretch;
+}
+.st-painted .card { padding: 14px 8px; }
+.st-painted form.form { padding: 10px 6px; }
+.st-painted .wish { border-width: 16px; border-image-width: 16px; padding: 4px 6px; }
+.st-painted .quote { padding: 14px 10px 10px; margin-top: 30px; }
+.st-painted .quote .qmark { top: -46px; color: var(--pt-title); }
+.st-painted .guest-box { padding: 4px 10px; }
+.st-painted .countdown { gap: 6px; }
+.st-painted .countdown > div { border-width: 14px; border-image-width: 14px; padding: 4px 0; }
+.st-painted .countdown b { color: var(--pt-title); }
+.st-painted .stats > div { border-width: 14px; border-image-width: 14px; }
+.st-painted .ev-icon { background: var(--pt-blob, var(--accent)) center / 100% 100% no-repeat; box-shadow: none; margin-top: -48px; }
+.st-painted .events { padding-top: 34px; }
+.st-painted .gift { background: none; }
+.st-painted .gift::after, .st-painted .gift .chip-card { display: none; }
+.st-painted .field input, .st-painted .field select, .st-painted .field textarea, .st-painted .choices label {
+  background: rgba(255, 252, 240, .5); border: 0; border-bottom: 2px solid color-mix(in srgb, var(--ink) 40%, transparent); border-radius: 0;
+}
+.st-painted .choices label:has(input:checked) { background: color-mix(in srgb, var(--accent) 14%, rgba(255, 252, 240, .6)); border-bottom-color: var(--accent); }
+.st-painted .field input:focus, .st-painted .field select:focus, .st-painted .field textarea:focus { box-shadow: none; border-bottom-color: var(--accent); }
+.st-painted .wish .wav, .st-painted .fab { background: var(--pt-blob, var(--accent)) center / 100% 100% no-repeat; box-shadow: none; }
+.st-painted .fab.on { filter: hue-rotate(160deg) saturate(.6); }
+.st-painted .dock { padding: 0; border-width: 18px; border-image-width: 18px; }
+.st-painted .dock a.active { background: var(--pt-blob, var(--accent)) center / 100% 100% no-repeat; color: #fff; }
+.st-painted .timeline .item::before { background: var(--pt-blob, var(--accent)) center / 100% 100% no-repeat; box-shadow: none; }
+.st-painted .timeline .item::after { background: color-mix(in srgb, var(--pt-title) 35%, transparent); }
+.st-painted .timeline .what { color: var(--pt-title); }
+.st-painted .dress .swatches i { border: 0; border-radius: 45% 55% 50% 50%; box-shadow: none; }
+
+/* Foto mempelai dalam bingkai emas yang dilukis */
+.st-painted .hosts { gap: 70px; padding-top: 50px; }
+.st-painted .avatar { position: relative; overflow: visible; border: 0; outline: 0; box-shadow: none; border-radius: 50%; width: 150px; height: 196px; }
+.st-painted .avatar img { border-radius: 50%; }
+.st-painted .avatar::after { content: ""; position: absolute; left: -41px; right: -41px; top: -57px; bottom: -57px; background: var(--pt-frame, none) center / 100% 100% no-repeat; pointer-events: none; }
+.st-painted .avatar.no-photo { width: 110px; height: 144px; }
+.st-painted .avatar.no-photo::after { left: -30px; right: -30px; top: -42px; bottom: -42px; }
+.st-painted .host .role { margin-top: 64px; }
+.st-painted .host .name { font-family: var(--font-script); font-weight: 400; font-size: calc(2rem * var(--script-size)); color: var(--pt-title); margin-top: 0; }
+.st-painted .host .role { color: var(--accent); }
+.st-painted .amp { color: var(--pt-title); }
+.st-painted .gallery { gap: 12px; }
+.st-painted .gallery .tile { border: 12px solid transparent; border-image: var(--pt-card, none) 58 / 12px / 0 stretch; border-radius: 0; background-clip: padding-box; }
+
+/* Judul diketik */
+.st-painted .letters .ch { opacity: 0; transform: none; filter: none; }
+.st-painted .go .letters .ch, .st-painted .cover.go .letters .ch { animation: ptype .14s ease-out both; animation-delay: calc(var(--base, 0ms) + var(--i) * 85ms); }
+@keyframes ptype { from { opacity: 0; } to { opacity: 1; } }
+
+/* Sampul: kamera menyelam ke tengah adegan */
+.st-painted .cover { background: var(--bg); }
+.st-painted .cover .cover-inner { justify-content: flex-start; padding-top: 8vh; gap: 10px; z-index: 9; text-shadow: 0 1px 0 rgba(255, 255, 255, .7), 0 0 20px rgba(255, 250, 235, .95); }
+.st-painted .cover .title-script { font-size: calc(clamp(3rem, 13vw, 4.6rem) * var(--script-size)); }
+.st-painted .cover .guest-box .name { color: var(--pt-title); }
+.cover.eff-dive .pcam { transition: transform 1.8s cubic-bezier(.6, 0, .25, 1); }
+.cover.eff-dive.opening .pcam { transform: scale(2.7) translateY(4%); }
+.cover.eff-dive { transition: opacity .9s ease 1.2s; }
+.cover.eff-dive.opened { opacity: 0; }
+
+/* Desktop: adegan di kiri */
+.st-painted .side { padding: 0; align-items: flex-start; background: var(--bg); border-right: 0; }
+.st-painted .side .side-inner { position: relative; z-index: 9; margin-top: 9vh; text-shadow: 0 1px 0 rgba(255, 255, 255, .7), 0 0 22px rgba(255, 250, 235, .95); }
+.st-painted .side .title-script { font-size: calc(5.6rem * var(--script-size)); }
+.st-painted .credit { position: relative; z-index: 2; }
+
+@media (prefers-reduced-motion: reduce) {
+  .pcam, .ply, .pbirds { animation: none !important; }
+  .st-painted .letters .ch { opacity: 1 !important; }
+}

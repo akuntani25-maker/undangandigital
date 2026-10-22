@@ -752,13 +752,18 @@
         loader.classList.add('done');
         $('#cover').classList.add('go');
         var side = $('.side'); if (side) side.classList.add('go');
-        var ob = $('#open-btn'); if (ob) ob.focus({ preventScroll: true });
+        var cv = $('#cover'); if (cv) { cv.setAttribute('tabindex', '-1'); cv.focus({ preventScroll: true }); }
         setTimeout(function () { loader.remove(); }, 700);
       }, Math.max(0, (REDUCED ? 0 : 900) - (Date.now() - shown)));
     }
+    /* Gaya lukisan: tunggu lapisan selesai dipanggang (maks. 7 detik) */
+    if (window.PAINTER && window.PAINTER.whenReady) {
+      var readyNow = ready, gate = Promise.race([window.PAINTER.whenReady(), new Promise(function (r) { setTimeout(r, 7000); })]);
+      ready = function () { gate.then(readyNow); };
+    }
     if (document.readyState === 'complete') ready(); else window.addEventListener('load', ready);
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(ready);
-    setTimeout(ready, 3500);
+    setTimeout(function () { ready(); }, 3500);
   }
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', mount); else mount();

@@ -282,3 +282,24 @@ html:not(.mo-on) .cover.eff-mo.opened { opacity: 0; }
 @media (prefers-reduced-motion: reduce) {
   .mo-deco *, .mo-marquee .mq-row, .var-orbit .avatar, .var-orbit .avatar > *, .var-bubble .ev-icon, .var-bubble .avatar { animation: none !important; }
 }
+
+/* ---------- Ikon layar penuh di foto galeri aktif ---------- */
+.mg-zoom { position: absolute; right: 10px; bottom: 10px; width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center;
+  background: rgba(0,0,0,.45); color: #fff; z-index: 3; opacity: 0; transform: scale(.6); transition: opacity .3s, transform .3s; pointer-events: none; }
+.mg-zoom svg { width: 17px; height: 17px; }
+.mg-item.on .mg-zoom { opacity: 1; transform: none; }
+.mg-ring .mg-zoom, .mg-sphere .mg-zoom, .var-orbit .mg-zoom, .var-bubble .mg-zoom { right: 50%; bottom: 12%; margin-right: -15px; }
+.mg-sphere .mg-zoom { width: 24px; height: 24px; margin-right: -12px; }
+.mg-sphere .mg-zoom svg { width: 14px; height: 14px; }
+.var-velvet .mg-zoom { right: 50%; margin-right: -15px; bottom: 14px; }
+
+/* ---------- Perbaikan: ikon tidak tertutup bentuk kartu (tiket/chamfer) ---------- */
+.var-sorbet .events { padding-top: 0; row-gap: 24px; }
+.var-sorbet .ev-icon { margin-top: 0; margin-bottom: 2px; border-radius: 16px; transform: rotate(-6deg); box-shadow: 0 5px 0 color-mix(in srgb, var(--accent) 45%, #000); }
+.var-sorbet .card:nth-child(even) .ev-icon { transform: rotate(6deg); }
+.var-sorbet .quote, .var-orbit .quote { padding-top: 18px; }
+.var-sorbet .quote .qmark, .var-orbit .quote .qmark { position: static; transform: none; display: block; font-size: 52px; line-height: .9; margin: 0 auto -6px; }
+.var-sorbet .gift::after, .var-orbit .gift::after { display: none; }
+/* dekorasi hero memenuhi seluruh bagian, tidak terpotong tepi panel */
+.st-motion .hero > .hero-panel { position: static; }
+.st-motion .hero > .hero-panel > .panel-in { position: relative; z-index: 2; }

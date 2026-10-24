@@ -192,7 +192,6 @@
     var kind = (DATA.theme && DATA.theme.gallery) || V.gallery;
     var n = photos.length || g.placeholders || V.count;
     if (kind === 'sphere') n = Math.max(n, 14);
-    var dlg = $('dialog.lightbox', sec), big = dlg && $('img', dlg);
     var wrap = h('div', { class: 'mg mg-' + kind });
     var stage = h('div', { class: 'mg-stage', tabindex: '0', role: 'group', 'aria-roledescription': 'galeri', 'aria-label': 'Galeri foto. Geser atau pakai tombol panah.' });
     var track = h('div', { class: 'mg-track' });
@@ -208,6 +207,8 @@
       if (p) it.setAttribute('data-src', p.src);
       it.appendChild(img);
       it.appendChild(h('span', { class: 'mg-gloss', 'aria-hidden': 'true' }));
+      it.appendChild(h('span', { class: 'mg-zoom', 'aria-hidden': 'true' }, '<svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M16 16l4.5 4.5M11 8v6M8 11h6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>'));
+      it.setAttribute('aria-label', 'Lihat foto ' + (k + 1) + ' layar penuh');
       track.appendChild(it); items.push(it);
     }
     var ui = h('div', { class: 'mg-ui' });
@@ -215,14 +216,17 @@
     var next = h('button', { class: 'mg-btn', type: 'button', 'aria-label': 'Berikutnya' }, '<svg viewBox="0 0 24 24" width="20" height="20"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>');
     var count = h('span', { class: 'mg-count', 'aria-live': 'polite' });
     ui.append(prev, count, next);
-    var hint = h('p', { class: 'mg-hint', text: { barrel: 'Geser untuk memutar silinder foto', stack: 'Lempar kartu teratas ke kiri/kanan', ring: 'Putar cakram foto dengan menggeser', helix: 'Geser untuk menaiki spiral foto', sphere: 'Seret untuk memutar bola foto' }[kind] });
+    var hint = h('p', { class: 'mg-hint', text: { barrel: 'Geser untuk memutar · ketuk foto depan untuk layar penuh', stack: 'Lempar kartu ke kiri/kanan · ketuk untuk layar penuh', ring: 'Putar cakram · ketuk foto atas untuk layar penuh', helix: 'Geser spiral · ketuk foto depan untuk layar penuh', sphere: 'Seret untuk memutar · ketuk foto untuk layar penuh' }[kind] });
     wrap.append(stage, ui, hint);
     grid.replaceWith(wrap);
 
+    /* daftar foto untuk penampil layar penuh (foto asli, atau foto contoh versi besar) */
+    var full = [];
+    for (var f = 0; f < real; f++) full.push(photos[f] ? { src: photos[f].src, alt: photos[f].alt || 'Foto ' + (f + 1) } : { src: sampleArt(f, 900, kind === 'ring' || kind === 'sphere' ? 900 : 1100), alt: 'Foto contoh ' + (f + 1) });
     function open(it) {
-      var src = it.getAttribute('data-src');
-      if (src && dlg && big && dlg.showModal) { big.src = src; big.alt = $('img', it).alt; dlg.showModal(); return; }
-      if (ON) M.animate(it.firstChild, { scale: [1, 1.08, 1] }, { duration: 0.5, ease: EASE });
+      var k = +it.getAttribute('data-i') || 0;
+      if (ON) M.animate(it, { scale: [1, 1.06, 1] }, { duration: 0.35, ease: EASE });
+      if (window.INV_VIEWER) setTimeout(function () { window.INV_VIEWER(full, k); }, ON ? 140 : 0);
     }
     var api = { wrap: wrap, stage: stage, items: items, count: count, prev: prev, next: next, open: open, real: real };
     if (kind === 'stack') Stack(api);

@@ -138,7 +138,8 @@ Domain sendiri (mis. `undanganku.id`) bisa ditambahkan di **Project → Settings
 | `theme.pattern` | Pola latar halus: `dots`, `grid`, `diamond` (opsional) |
 | `monogram` | Teks di bingkai & layar memuat bila belum ada foto (default: inisial dari judul) |
 | `autoScroll` | `false` untuk menyembunyikan tombol gulir otomatis |
-| `music` | Path mp3, mis. `/assets/audio/lagu.mp3` (kosong = tanpa musik) |
+| `music` | Musik latar: kosong / `'random'` = lagu romantis acak (5 lagu orisinal bawaan di `assets/audio/`), path mp3 untuk lagu tertentu (+ `musicTitle`), atau `false` untuk tanpa musik. Tombol play/pause tampil di kanan bawah |
+| `gallery.photos` | Daftar foto `[{ src: '/u/nama/foto1.jpg', alt: 'Keterangan' }]`. Semua foto bisa diketuk untuk dilihat layar penuh (geser/panah untuk pindah). Bila kosong, tampil foto contoh |
 | `cover` | `eyebrow`, `title`, `photo` (foto sampul), `toLabel`, `note`, `button` |
 | `hero` | `eyebrow`, `title`, `text` |
 | `opening` | `arabic` (opsional), `greeting`, `text` |
@@ -227,7 +228,7 @@ Saat masa aktif habis dan klien tidak memperpanjang: hapus blok rewrite-nya dan 
 ## Setelah mengubah file CSS/JS
 
 Setiap link ke file `.css`/`.js` memakai nomor versi, mis. `/assets/css/landing.css?v=6`.
-Bila Anda mengubah isi file di `assets/` atau `site.config.js`, naikkan nomornya (cari-ganti `?v=6` → `?v=7`
+Bila Anda mengubah isi file di `assets/` atau `site.config.js`, naikkan nomornya (cari-ganti `?v=9` → `?v=10`
 di semua file `.html`) agar browser pengunjung langsung memakai versi terbaru, bukan versi lama yang tersimpan.
 
 Bila halaman tampak berantakan setelah update, coba buka di tab penyamaran (incognito) atau tekan **Ctrl+Shift+R**.

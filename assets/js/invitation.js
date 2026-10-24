@@ -127,6 +127,8 @@
     chat: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h16v11H9l-5 4z"/></svg>',
     gift: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="9" width="18" height="12" rx="1.5"/><path d="M3 13h18M12 9v12M12 9c-2-4-7-4-6-1s6 1 6 1c2-4 7-4 6-1s-6 1-6 1"/></svg>',
     scroll: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 10l5 5 5-5"/><path d="M7 5l5 5 5-5" opacity=".5"/></svg>',
+    play: '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13a1 1 0 001.5.86l10.5-6.5a1 1 0 000-1.72L9.5 4.64A1 1 0 008 5.5z"/></svg>',
+    note: '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M9 17.5V6.3a1 1 0 01.76-.97l9-2.25A1 1 0 0120 4.05V15.5a2.5 2.5 0 11-2-2.45V7.3l-7 1.75v8.45A2.5 2.5 0 119 17.5z"/></svg>',
     pause: '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>',
     check: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l4 4 10-10"/></svg>'
   };
@@ -382,26 +384,82 @@
     return section(id, [heading(id, t.eyebrow, t.heading || defHeading, t.intro), tl]);
   }
 
+  /* Foto contoh (dipakai bila klien belum mengisi foto) — gambar vektor, tajam di layar penuh */
+  function sampleArt(i, w, hgt) {
+    var cs = getComputedStyle(document.documentElement);
+    function v(n, fb) { return (cs.getPropertyValue(n) || '').trim() || fb; }
+    var a = v('--accent', '#9C4A64'), b = v('--accent-2', '#E9A2B5'), c = v('--bg-2', '#FBEFF1'), ink = v('--ink', '#333');
+    var sd = (i + 1) * 7919, R = function () { sd = (sd * 1664525 + 1013904223) >>> 0; return sd / 4294967296; };
+    var id = 'sg' + i + '_' + Math.floor(R() * 1e6);
+    var sx = (0.2 + R() * 0.6) * w, sy = (0.18 + R() * 0.25) * hgt, sr = (0.12 + R() * 0.12) * Math.min(w, hgt);
+    function hill(y, amp, col, op) { var d = 'M0 ' + y; for (var k = 1; k <= 4; k++) d += ' Q' + (w * (k - 0.5) / 4) + ' ' + (y - amp * (R() + 0.3)) + ' ' + (w * k / 4) + ' ' + y; return '<path d="' + d + ' L' + w + ' ' + hgt + ' L0 ' + hgt + 'Z" fill="' + col + '" opacity="' + op + '"/>'; }
+    var svg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ' + w + ' ' + hgt + '" width="' + w + '" height="' + hgt + '"><defs><linearGradient id="' + id + '" x1="0" y1="0" x2="' + (i % 2) + '" y2="1"><stop offset="0" stop-color="' + c + '"/><stop offset="1" stop-color="' + b + '"/></linearGradient></defs>' +
+      '<rect width="' + w + '" height="' + hgt + '" fill="url(#' + id + ')"/><circle cx="' + sx + '" cy="' + sy + '" r="' + sr + '" fill="' + a + '" opacity=".55"/>' +
+      hill(hgt * 0.72, hgt * 0.12, a, 0.35) + hill(hgt * 0.84, hgt * 0.1, ink, 0.18) +
+      '<text x="' + (w / 2) + '" y="' + (hgt * 0.94) + '" font-family="sans-serif" font-size="' + (Math.min(w, hgt) * 0.06) + '" fill="' + ink + '" opacity=".55" text-anchor="middle" letter-spacing="2">FOTO ' + (i + 1) + '</text></svg>';
+    return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
+  }
+  window.INV_SAMPLE = sampleArt;
+
+  /* Penampil foto layar penuh: geser/panah untuk pindah, Esc/ketuk luar untuk menutup */
+  var viewer = null;
+  function openViewer(list, start) {
+    if (!list || !list.length) return;
+    if (!viewer) {
+      var img = h('img', { class: 'pv-img', alt: '' });
+      var cap = h('div', { class: 'pv-cap', 'aria-live': 'polite' });
+      var dlg = h('dialog', { class: 'pviewer', 'aria-label': 'Foto layar penuh' },
+        h('div', { class: 'pv-stage' }, img),
+        h('button', { class: 'pv-btn pv-close', type: 'button', 'aria-label': 'Tutup', svg: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>' }),
+        h('button', { class: 'pv-btn pv-prev', type: 'button', 'aria-label': 'Foto sebelumnya', svg: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>' }),
+        h('button', { class: 'pv-btn pv-next', type: 'button', 'aria-label': 'Foto berikutnya', svg: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>' }),
+        cap);
+      document.body.appendChild(dlg);
+      viewer = { dlg: dlg, img: img, cap: cap, list: [], i: 0 };
+      var show = function (k, dir) {
+        var L = viewer.list; viewer.i = (k + L.length) % L.length; var it = L[viewer.i];
+        img.classList.remove('in', 'from-l', 'from-r'); void img.offsetWidth;
+        img.src = it.src; img.alt = it.alt || '';
+        img.classList.add(dir < 0 ? 'from-l' : dir > 0 ? 'from-r' : 'in'); requestAnimationFrame(function () { img.classList.add('in'); });
+        cap.textContent = (it.alt ? it.alt + ' · ' : '') + (viewer.i + 1) + ' / ' + L.length;
+        dlg.classList.toggle('single', L.length < 2);
+      };
+      viewer.show = show;
+      dlg.querySelector('.pv-close').onclick = function () { dlg.close(); };
+      dlg.querySelector('.pv-prev').onclick = function () { show(viewer.i - 1, -1); };
+      dlg.querySelector('.pv-next').onclick = function () { show(viewer.i + 1, 1); };
+      dlg.addEventListener('click', function (e) { if (e.target === dlg || e.target.classList.contains('pv-stage')) dlg.close(); });
+      dlg.addEventListener('keydown', function (e) { if (e.key === 'ArrowRight') show(viewer.i + 1, 1); else if (e.key === 'ArrowLeft') show(viewer.i - 1, -1); });
+      var sx = 0, sy = 0, tracking = false;
+      dlg.addEventListener('pointerdown', function (e) { sx = e.clientX; sy = e.clientY; tracking = true; });
+      dlg.addEventListener('pointerup', function (e) {
+        if (!tracking) return; tracking = false;
+        var dx = e.clientX - sx, dy = e.clientY - sy;
+        if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) show(viewer.i + (dx < 0 ? 1 : -1), dx < 0 ? 1 : -1);
+        else if (dy > 90 && Math.abs(dy) > Math.abs(dx)) dlg.close();
+      });
+      dlg.addEventListener('close', function () { document.documentElement.classList.remove('pv-open'); });
+    }
+    viewer.list = list;
+    viewer.show(start || 0, 0);
+    document.documentElement.classList.add('pv-open');
+    if (viewer.dlg.showModal) { if (!viewer.dlg.open) viewer.dlg.showModal(); } else viewer.dlg.setAttribute('open', '');
+  }
+  window.INV_VIEWER = openViewer;
+
   function buildGallery() {
     var g = D.gallery; if (!g) return null;
-    var photos = g.photos && g.photos.length ? g.photos : [];
+    var photos = g.photos && g.photos.length ? g.photos.filter(function (p) { return p && p.src; }) : [];
     var grid = h('div', { class: 'gallery' });
-    var dlg = h('dialog', { class: 'lightbox', 'aria-label': 'Foto' });
-    var big = h('img', { alt: '' });
-    dlg.append(big, h('button', { class: 'btn small', type: 'button', onclick: function () { dlg.close(); } }, 'Tutup'));
-    dlg.addEventListener('click', function (e) { if (e.target === dlg) dlg.close(); });
-    if (photos.length) {
-      photos.forEach(function (p, i) {
-        grid.appendChild(A(h('button', { class: 'tile', type: 'button', 'aria-label': 'Perbesar foto ' + (i + 1), onclick: function () {
-          big.src = p.src; big.alt = p.alt || ''; if (dlg.showModal) dlg.showModal();
-        } }, h('img', { src: p.src, alt: p.alt || '', loading: 'lazy' })), 'zoom'));
-      });
-    } else {
-      for (var i = 0; i < (g.placeholders || 5); i++) {
-        grid.appendChild(A(h('div', { class: 'tile placeholder ph' }, h('span', { svg: ICON.photo }), h('span', { class: 'ph-label', text: 'Foto ' + (i + 1) })), 'zoom'));
-      }
-    }
-    return section('galeri', [heading('galeri', g.eyebrow || 'Galeri', g.heading || 'Momen Kami', g.intro), grid, dlg]);
+    var list = photos.length ? photos.map(function (p, i) { return { src: p.src, alt: p.alt || ('Foto ' + (i + 1)) }; })
+      : (function () { var a = []; for (var i = 0; i < (g.placeholders || 5); i++) a.push({ src: sampleArt(i, 900, 1100), alt: 'Foto contoh ' + (i + 1), sample: true }); return a; })();
+    list.forEach(function (p, i) {
+      grid.appendChild(A(h('button', { class: 'tile' + (p.sample ? ' sample' : ''), type: 'button', 'aria-label': 'Lihat foto ' + (i + 1) + ' layar penuh', onclick: function () { openViewer(list, i); } },
+        h('img', { src: p.src, alt: p.alt || '', loading: 'lazy' }),
+        h('span', { class: 'zoom-ic', 'aria-hidden': 'true', svg: '<svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M16 16l4.5 4.5M11 8v6M8 11h6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>' })
+      ), 'zoom'));
+    });
+    return section('galeri', [heading('galeri', g.eyebrow || 'Galeri', g.heading || 'Momen Kami', g.intro), grid]);
   }
 
   function buildVideo() {
@@ -641,15 +699,35 @@
 
   /* ---------- Musik & gulir otomatis ---------- */
   var audio, musicBtn, autoBtn, autoOn = false, rafId;
+  /* Musik latar: music: '/assets/audio/x.mp3' (lagu tertentu), '' / 'random' (acak dari daftar), false (tanpa musik) */
+  var TRACKS = (window.SITE && window.SITE.music && window.SITE.music.length) ? window.SITE.music : [
+    { src: '/assets/audio/romantis-1-senja-di-taman.mp3', title: 'Senja di Taman' },
+    { src: '/assets/audio/romantis-2-janji-suci.mp3', title: 'Janji Suci' },
+    { src: '/assets/audio/romantis-3-kotak-musik.mp3', title: 'Kotak Musik Rindu' },
+    { src: '/assets/audio/romantis-4-langkah-berdua.mp3', title: 'Langkah Berdua' },
+    { src: '/assets/audio/romantis-5-cahaya-lilin.mp3', title: 'Cahaya Lilin' }
+  ];
+  var playlist = [], trackI = 0, musicLabel;
   function buildFabs() {
     var stack = h('div', { class: 'fabs' });
-    if (D.music) {
-      audio = h('audio', { src: D.music, loop: true, preload: 'none' });
-      musicBtn = h('button', { class: 'fab', type: 'button', 'aria-label': 'Putar/jeda musik', 'aria-pressed': 'false', svg: ICON.disc, onclick: function () {
-        if (audio.paused) playMusic(); else { audio.pause(); setMusic(false); }
+    if (D.music !== false) {
+      if (typeof D.music === 'string' && D.music && D.music !== 'random') playlist = [{ src: D.music, title: D.musicTitle || 'Musik latar' }];
+      else {
+        playlist = TRACKS.slice();
+        for (var k = playlist.length - 1; k > 0; k--) { var j = Math.floor(Math.random() * (k + 1)), tmp = playlist[k]; playlist[k] = playlist[j]; playlist[j] = tmp; }
+      }
+      audio = h('audio', { src: playlist[0].src, preload: 'none' });
+      audio.volume = 0.7;
+      if (playlist.length === 1) audio.loop = true;
+      audio.addEventListener('ended', function () { trackI = (trackI + 1) % playlist.length; audio.src = playlist[trackI].src; playMusic(); });
+      audio.addEventListener('pause', function () { setMusic(false); });
+      audio.addEventListener('playing', function () { setMusic(true); });
+      musicBtn = h('button', { class: 'fab music', type: 'button', 'aria-label': 'Putar musik', 'aria-pressed': 'false', svg: ICON.play, onclick: function () {
+        if (audio.paused) playMusic(); else audio.pause();
       } });
+      musicLabel = h('span', { class: 'music-label', 'aria-hidden': 'true' }, h('span', { class: 'ml-ic', svg: ICON.note }), h('span', { class: 'ml-t', text: playlist[0].title }));
       document.body.appendChild(audio);
-      stack.appendChild(musicBtn);
+      stack.appendChild(h('div', { class: 'fab-wrap' }, musicLabel, musicBtn));
     }
     if (D.autoScroll !== false) {
       autoBtn = h('button', { class: 'fab', type: 'button', 'aria-label': 'Gulir otomatis', 'aria-pressed': 'false', svg: ICON.scroll, onclick: function () { toggleAuto(!autoOn); } });
@@ -673,7 +751,18 @@
       rafId = requestAnimationFrame(step);
     })(last);
   }
-  function setMusic(on) { if (!musicBtn) return; musicBtn.classList.toggle('playing', on); musicBtn.setAttribute('aria-pressed', on ? 'true' : 'false'); }
+  function setMusic(on) {
+    if (!musicBtn) return;
+    musicBtn.classList.toggle('playing', on);
+    musicBtn.setAttribute('aria-pressed', on ? 'true' : 'false');
+    musicBtn.setAttribute('aria-label', on ? 'Jeda musik' : 'Putar musik');
+    musicBtn.innerHTML = on ? ICON.pause : ICON.play;
+    if (musicLabel) {
+      musicLabel.querySelector('.ml-t').textContent = (playlist[trackI] || {}).title || '';
+      if (on) { musicLabel.classList.add('show'); clearTimeout(setMusic.t); setMusic.t = setTimeout(function () { musicLabel.classList.remove('show'); }, 3200); }
+      else musicLabel.classList.remove('show');
+    }
+  }
   function playMusic() {
     if (!audio) return;
     var p = audio.play();

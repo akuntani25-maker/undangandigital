@@ -507,3 +507,52 @@ body.is-open .dock { transform: translate(-50%, 0); }
 }
 
 .cover:focus { outline: none; }
+
+/* ---------- Penampil foto layar penuh ---------- */
+.gallery .tile { cursor: zoom-in; position: relative; }
+.gallery .tile.sample img { object-fit: cover; }
+.gallery .tile .zoom-ic {
+  position: absolute; right: 8px; bottom: 8px; width: 32px; height: 32px; border-radius: 50%; display: grid; place-items: center;
+  background: rgba(0,0,0,.42); color: #fff; backdrop-filter: blur(4px); opacity: .9; transition: transform .3s var(--ease);
+}
+.gallery .tile .zoom-ic svg { width: 18px; height: 18px; }
+.gallery .tile:hover .zoom-ic { transform: scale(1.12); }
+.pviewer {
+  position: fixed; inset: 0; width: 100vw; height: 100vh; height: 100dvh; max-width: none; max-height: none; margin: 0; padding: 0;
+  border: 0; background: rgba(10, 8, 12, .95); color: #fff; overflow: hidden; z-index: 100;
+}
+.pviewer[open] { animation: pvIn .3s ease; }
+.pviewer::backdrop { background: rgba(0,0,0,.5); }
+@keyframes pvIn { from { opacity: 0; } to { opacity: 1; } }
+.pv-stage { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; padding: 64px 12px 70px; touch-action: none; }
+.pv-img { max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain; border-radius: 10px; box-shadow: 0 20px 60px rgba(0,0,0,.5);
+  opacity: 0; transform: scale(.95); transition: opacity .35s ease, transform .45s var(--ease); user-select: none; -webkit-user-drag: none; }
+.pv-img.from-l { transform: translateX(-46px); } .pv-img.from-r { transform: translateX(46px); }
+.pv-img.in { opacity: 1; transform: none; }
+.pv-btn { position: absolute; width: 48px; height: 48px; border-radius: 50%; border: 0; cursor: pointer; display: grid; place-items: center;
+  background: rgba(255,255,255,.14); color: #fff; backdrop-filter: blur(6px); transition: background .2s; z-index: 2; }
+.pv-btn:hover { background: rgba(255,255,255,.26); }
+.pv-btn svg { width: 22px; height: 22px; }
+.pv-btn:focus-visible { outline: 3px solid #fff; outline-offset: 2px; }
+.pv-close { top: 12px; right: 12px; }
+.pv-prev { left: 10px; top: 50%; transform: translateY(-50%); } .pv-next { right: 10px; top: 50%; transform: translateY(-50%); }
+.pviewer.single .pv-prev, .pviewer.single .pv-next { display: none; }
+.pv-cap { position: absolute; left: 0; right: 0; bottom: 18px; text-align: center; font-size: 14px; letter-spacing: .06em; opacity: .85; padding: 0 70px; }
+html.pv-open, html.pv-open body { overflow: hidden; }
+
+/* ---------- Tombol musik (play/pause) + judul lagu ---------- */
+.fab-wrap { position: relative; display: flex; align-items: center; justify-content: flex-end; }
+.fab.music { position: relative; }
+.fab.music.playing svg { animation: none; }
+.fab.music.playing::before {
+  content: ""; position: absolute; inset: -5px; border-radius: 50%; border: 2px solid var(--accent); opacity: .6;
+  animation: musicRing 1.8s ease-out infinite; pointer-events: none;
+}
+@keyframes musicRing { from { transform: scale(.9); opacity: .7; } to { transform: scale(1.35); opacity: 0; } }
+.music-label {
+  position: absolute; right: 58px; display: flex; align-items: center; gap: 6px; white-space: nowrap;
+  background: var(--ink); color: var(--bg); padding: 7px 13px; border-radius: 999px; font-size: 12.5px; font-weight: 600;
+  box-shadow: 0 8px 20px rgba(0,0,0,.18); opacity: 0; transform: translateX(10px); transition: opacity .35s, transform .45s var(--ease); pointer-events: none;
+}
+.music-label.show { opacity: 1; transform: none; }
+.music-label .ml-ic svg { width: 14px; height: 14px; display: block; }

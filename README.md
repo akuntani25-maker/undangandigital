@@ -34,6 +34,7 @@ Tidak perlu build, tidak perlu `npm install`. Langsung bisa di-deploy ke Vercel.
 │   ├── img/                   Foto klien
 │   └── audio/                 Musik latar
 ├── assets/js/templates-data.js  Daftar template yang tampil di landing page
+├── (landing) Daftar template tampil sebagai coverflow 3D (bisa diganti ke Grid). Urutannya mengikuti templates-data.js.
 ├── assets/img/thumbs/         Gambar sampul kartu template (nama-file = slug.webp, 520×960). Template baru tanpa gambar otomatis memakai kartu teks.
 ├── templates/                 21 demo template (dibuka dari landing page)
 ├── u/                         Undangan pesanan klien (satu folder per klien)

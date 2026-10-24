@@ -249,3 +249,92 @@ h2 { margin: 0; font-family: var(--display); font-size: clamp(2rem, 3.5vw, 2.8re
 }
 .tcard:hover .tprev .tshot { transform: translateY(-4px) scale(1.02); }
 @media (prefers-reduced-motion: reduce) { .tprev .tshot { transition: none; } }
+
+/* =========================================================
+   COVERFLOW daftar template
+   ========================================================= */
+#template { position: relative; overflow: hidden; --cf-tint: #F3E6CB; }
+#template::before {
+  content: ""; position: absolute; inset: 0; pointer-events: none; z-index: -1;
+  background: radial-gradient(60% 45% at 50% 62%, color-mix(in srgb, var(--cf-tint) 85%, transparent) 0%, transparent 72%),
+              linear-gradient(180deg, var(--white) 0%, color-mix(in srgb, var(--cf-tint) 28%, #fff) 55%, var(--white) 100%);
+  transition: background 1s ease;
+}
+#template { isolation: isolate; }
+.view-toggle { display: inline-flex; gap: 4px; padding: 4px; margin-top: 14px; border-radius: 999px; background: var(--blush); }
+.view-toggle button {
+  display: inline-flex; align-items: center; gap: 6px; font: inherit; font-size: 14px; font-weight: 600; min-height: 40px; padding: 8px 16px;
+  border: 0; border-radius: 999px; background: transparent; color: var(--muted); cursor: pointer; transition: background .25s, color .25s, box-shadow .25s;
+}
+.view-toggle button[aria-pressed="true"] { background: var(--white); color: var(--plum); box-shadow: 0 2px 8px rgba(91,42,74,.14); }
+.tgrid { margin-top: 28px; }
+.tgrid[hidden], .cflow[hidden] { display: none; }
+
+.cflow { --cf-h: 460px; position: relative; margin-top: 18px; user-select: none; -webkit-user-select: none; }
+.cf-stage {
+  position: relative; height: calc(var(--cf-h) + 70px); perspective: 1400px; perspective-origin: 50% 40%;
+  transform-style: preserve-3d; touch-action: pan-y; cursor: grab; outline: none; overflow: visible;
+}
+.cflow.dragging .cf-stage { cursor: grabbing; }
+.cf-stage:focus-visible { outline: 3px solid #C98A9B; outline-offset: -6px; border-radius: 24px; }
+.cf-item {
+  position: absolute; left: 50%; top: 34px; height: var(--cf-h); aspect-ratio: 520 / 960; margin-left: calc(var(--cf-h) * -0.2708);
+  border-radius: 30px; border: 7px solid #1E1A20; background: var(--bg, #fff); overflow: visible;
+  transform-style: preserve-3d; will-change: transform; backface-visibility: hidden; -webkit-tap-highlight-color: transparent;
+  box-shadow: 0 30px 50px -18px rgba(36, 20, 30, .45);
+  -webkit-box-reflect: below 10px linear-gradient(transparent 72%, rgba(255,255,255,.22));
+}
+.cf-item img { width: 100%; height: 100%; object-fit: cover; object-position: top; border-radius: 23px; pointer-events: none; }
+.cf-item::after { /* bayangan untuk kartu samping */
+  content: ""; position: absolute; inset: 0; border-radius: 23px; background: #1A0F17; opacity: var(--shade, 0); pointer-events: none; transition: opacity .1s;
+}
+.cf-item::before { /* kilau kaca */
+  content: ""; position: absolute; inset: 0; border-radius: 23px; z-index: 1; pointer-events: none;
+  background: linear-gradient(115deg, rgba(255,255,255,.28) 0%, rgba(255,255,255,0) 32%);
+}
+.cf-item.is-active { box-shadow: 0 40px 70px -20px rgba(36, 20, 30, .55), 0 0 0 1px rgba(255,255,255,.4); }
+.cf-item.noimg { display: flex; align-items: center; justify-content: center; }
+.cf-txt { font-family: var(--f); color: var(--fg); font-size: 30px; text-align: center; padding: 16px; }
+.cf-new {
+  position: absolute; top: 14px; left: 50%; transform: translateX(-50%); z-index: 2; font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase;
+  color: #fff; background: var(--plum); padding: 4px 10px; border-radius: 999px; box-shadow: 0 4px 12px rgba(91,42,74,.35);
+}
+.cf-floor {
+  position: absolute; left: 50%; top: calc(var(--cf-h) + 30px); width: min(900px, 90vw); height: 60px; transform: translateX(-50%);
+  background: radial-gradient(50% 50% at 50% 50%, rgba(36,20,30,.18), transparent 70%); pointer-events: none; z-index: -1;
+}
+.cf-info { display: flex; align-items: center; justify-content: center; gap: 18px; margin-top: 30px; }
+.cf-meta { text-align: center; min-width: 0; flex: 0 1 520px; }
+.cf-count { font-size: 13px; font-weight: 600; letter-spacing: .14em; color: var(--muted); }
+.cf-meta h3 { font-family: var(--display); font-size: clamp(26px, 4vw, 36px); margin: 2px 0 10px; line-height: 1.15; }
+.cf-chips { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; font-size: 13px; color: var(--muted); }
+.cf-chips span { border: 1px solid color-mix(in srgb, var(--plum) 18%, transparent); background: rgba(255,255,255,.7); padding: 4px 11px; border-radius: 999px; }
+.cf-chips span.main { background: var(--plum); color: #fff; border-color: var(--plum); font-weight: 600; }
+.cf-actions { display: flex; justify-content: center; gap: 10px; margin-top: 18px; flex-wrap: wrap; }
+.cf-nav {
+  flex: none; width: 52px; height: 52px; border-radius: 50%; border: 1.5px solid #E2CFD6; background: rgba(255,255,255,.85); color: var(--plum);
+  display: inline-flex; align-items: center; justify-content: center; cursor: pointer; transition: background .25s, transform .25s, color .25s;
+  backdrop-filter: blur(6px);
+}
+.cf-nav:hover { background: var(--plum); color: #fff; transform: scale(1.06); }
+.cf-bar { width: min(320px, calc(100% - 48px)); height: 3px; margin: 26px auto 0; border-radius: 3px; background: color-mix(in srgb, var(--plum) 14%, transparent); overflow: hidden; }
+.cf-bar span { display: block; height: 100%; width: 0; background: var(--plum); border-radius: 3px; }
+.cf-hint { text-align: center; font-size: 13px; color: var(--muted); margin: 12px 0 0; }
+
+@media (max-width: 720px) {
+  .cflow { --cf-h: 380px; }
+  .cf-info { gap: 10px; }
+  .cf-nav { width: 44px; height: 44px; }
+  .cf-actions .btn { padding-left: 16px; padding-right: 16px; }
+}
+@media (max-width: 400px) {
+  .cflow { --cf-h: 340px; }
+  .cf-info { position: relative; }
+  .cf-nav { position: absolute; top: 0; }
+  .cf-nav.prev { left: 16px; } .cf-nav.next { right: 16px; }
+  .cf-meta { padding-top: 4px; }
+}
+@media (prefers-reduced-motion: reduce) { #template::before { transition: none; } }
+
+.cf-hint .hint-mouse { display: none; }
+@media (hover: hover) and (pointer: fine) { .cf-hint .hint-mouse { display: inline; } .cf-hint .hint-touch { display: none; } }

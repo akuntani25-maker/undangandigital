@@ -31,6 +31,8 @@ Tidak perlu build, tidak perlu `npm install`. Langsung bisa di-deploy ke Vercel.
 │   ├── css/styles.css         5 gaya tata letak (botanical, editorial, collage, royal, watercolor)
 │   ├── css/canvas.css, js/canvas.js   Gaya kanvas: adegan taman, tugu, rumah kebaya, ondel-ondel + animasi loop
 │   ├── css/painted.css, js/painter.js, js/adat.js   Gaya lukisan: mesin sapuan kuas + adegan 5 adat (Jawa, Bali, Minang, Toraja, Sasak)
+│   ├── css/motion.css, js/motion-kit.js            Gaya motion: galeri 3D (barrel, stack, ring, helix, sphere) + animasi pegas
+│   ├── vendor/motion.min.js                         Pustaka animasi Motion (MIT, disimpan lokal — tidak perlu CDN)
 │   ├── img/                   Foto klien
 │   └── audio/                 Musik latar
 ├── assets/js/templates-data.js  Daftar template yang tampil di landing page
@@ -122,9 +124,11 @@ Domain sendiri (mis. `undanganku.id`) bisa ditambahkan di **Project → Settings
 |---|---|
 | `slug` | ID unik undangan |
 | `timeZone` | `Asia/Jakarta` (WIB), `Asia/Makassar` (WITA), `Asia/Jayapura` (WIT) |
-| `theme.style` | Gaya tata letak: `botanical` (panel lengkung + buket bunga), `editorial` (koran/majalah), `collage` (amplop, polaroid, renda), `royal` (tirai, ornamen sudut, kamea oval), `watercolor` (cat air, tepi sobek, ranting, kupu-kupu), `canvas` (adegan ilustrasi menyambung + animasi loop — perlu memuat `canvas.css` & `canvas.js`, lihat template Taman Betawi), `painted` (lukisan di atas kanvas, halaman menyatu, tombol & kartu dilukis — perlu memuat `painted.css`, `painter.js` & `adat.js`, lihat 5 template adat) |
+| `theme.style` | Gaya tata letak: `botanical` (panel lengkung + buket bunga), `editorial` (koran/majalah), `collage` (amplop, polaroid, renda), `royal` (tirai, ornamen sudut, kamea oval), `watercolor` (cat air, tepi sobek, ranting, kupu-kupu), `canvas` (adegan ilustrasi menyambung + animasi loop — perlu memuat `canvas.css` & `canvas.js`, lihat template Taman Betawi), `painted` (lukisan di atas kanvas, halaman menyatu, tombol & kartu dilukis — perlu memuat `painted.css`, `painter.js` & `adat.js`, lihat 5 template adat), `motion` (galeri 3D interaktif + animasi pegas Motion — perlu memuat `motion.css`, `vendor/motion.min.js` & `motion-kit.js`, lihat 5 template motion) |
+| `theme.variant` | Khusus gaya `motion`: `velvet` (galeri barrel 3D, kartu lengkung, buka iris emas), `sorbet` (tumpukan kartu yang bisa dilempar, kartu tiket, buka swipe), `orbit` (cakram foto, kartu sudut potong neon, buka putaran), `sage` (spiral foto, kartu daun, sulur tumbuh saat scroll, buka tirai bilah), `bubble` (bola foto 3D, kartu kaca squircle, buka gelembung pecah). Pakai `opening: 'mo'` |
+| `theme.gallery` | Opsional (gaya `motion`): paksa jenis galeri `barrel`, `stack`, `ring`, `helix` atau `sphere`, terlepas dari varian |
 | `theme.adat` | Khusus gaya `painted`: `jawa`, `bali`, `minang`, `toraja`, `sasak` — menentukan adegan, palet, bingkai samping, bingkai foto & ornamen |
-| `theme.variant` | Varian gaya: `magazine` (editorial berwarna), `scrapbook` (kolase anak) |
+| `theme.variant` (gaya lain) | `magazine` (editorial berwarna), `scrapbook` (kolase anak) |
 | `theme.masthead`, `theme.edition` | Judul koran & keterangan edisi (khusus gaya `editorial`) |
 | `theme.heroFrame` | `true` untuk menampilkan bingkai foto juga di bagian pembuka |
 | `theme.opening` | Efek buka sampul: `bloom` (buket membelah), `paper` (halaman dibalik), `seal` (segel lilin retak + amplop), `drape` (tirai terkumpul), `wash` (cat air meluber), `camera` (kamera menyelam ke pintu rumah — gaya canvas), `dive` (kamera menyelam ke adegan lukisan — gaya painted), juga `envelope`, `curtain`, `gate`, `zoom`, `slide-up` |

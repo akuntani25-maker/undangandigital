@@ -28,7 +28,7 @@
         el('span', { class: 'dt', text: t.date })
       );
       for (var i = 0; i < 3; i++) { var s = el('span', { class: 'spark' }); s.innerHTML = SPARK; prev.appendChild(s); }
-      var shot = el('img', { class: 'tshot', src: '/assets/img/thumbs/' + t.slug + '.webp?v=6', alt: 'Tampilan sampul template ' + t.name, loading: 'lazy', decoding: 'async', width: '520', height: '960' });
+      var shot = el('img', { class: 'tshot', src: '/assets/img/thumbs/' + t.slug + '.webp?v=8', alt: 'Tampilan sampul template ' + t.name, loading: 'lazy', decoding: 'async', width: '520', height: '960' });
       shot.addEventListener('error', function () { this.parentNode.classList.remove('has-shot'); this.remove(); });
       prev.classList.add('has-shot'); prev.appendChild(shot);
       var fx = el('div', { class: 'fx' }, el('span', { text: 'Gaya ' + t.px }), el('span', { text: 'Buka: ' + t.fx }));
@@ -65,7 +65,7 @@
       stage.innerHTML = ''; items = [];
       list.forEach(function (t, i) {
         var it = el('a', { class: 'cf-item', href: demoUrl(t), target: '_blank', rel: 'noopener', 'aria-label': t.name + ' — ' + t.label, draggable: 'false', style: '--bg:' + t.bg });
-        var img = el('img', { src: '/assets/img/thumbs/' + t.slug + '.webp?v=6', alt: '', draggable: 'false', decoding: 'async', loading: i < 6 ? 'eager' : 'lazy', width: '520', height: '960' });
+        var img = el('img', { src: '/assets/img/thumbs/' + t.slug + '.webp?v=8', alt: '', draggable: 'false', decoding: 'async', loading: i < 6 ? 'eager' : 'lazy', width: '520', height: '960' });
         img.addEventListener('error', function () { this.remove(); it.classList.add('noimg'); it.appendChild(el('span', { class: 'cf-txt', style: '--fg:' + t.fg + ';--f:' + t.font, text: t.title })); });
         it.appendChild(img);
         if (t.isNew) it.appendChild(el('span', { class: 'cf-new', text: 'Baru' }));
